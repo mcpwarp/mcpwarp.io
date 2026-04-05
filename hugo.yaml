@@ -1,7 +1,6 @@
 baseURL: https://mcpwarp.io/
 languageCode: en-us
 title: MCP Warp
-copyright: MCP Warp
 
 module:
   imports:
