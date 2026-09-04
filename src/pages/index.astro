@@ -1,0 +1,282 @@
+---
+import { Image } from 'astro:assets';
+import Marketing from '../layouts/Marketing.astro';
+import hero from '../assets/hero.png';
+
+const steps = [
+  {
+    n: '1',
+    label: 'Install',
+    code: 'npm install -g mcpwarp',
+  },
+  {
+    n: '2',
+    label: 'Log in',
+    code: 'mcpwarp login',
+  },
+  {
+    n: '3',
+    label: 'Go',
+    code: `mcpwarp up
+
+NAME     KIND   URL
+blender  stdio  https://7f3a1c2e.mcpwarp.io/mcp
+notes    http   https://91bcf40a.mcpwarp.io/mcp`,
+  },
+];
+
+const features = [
+  {
+    title: 'OAuth built in',
+    body: 'Every public URL is protected by OAuth. No anonymous access, no shared secrets to leak.',
+  },
+  {
+    title: 'stdio and HTTP servers',
+    body: 'Expose a spawned stdio process or an already-running Streamable HTTP MCP server, same command.',
+  },
+  {
+    title: 'One URL per server',
+    body: 'Each server gets its own subdomain, so OAuth credential caches in your clients never collide.',
+  },
+  {
+    title: 'Works with your tools',
+    body: 'Claude, ChatGPT, Cursor, VS Code and any Streamable HTTP MCP client can connect directly.',
+  },
+  {
+    title: 'Streaming end-to-end',
+    body: 'Requests flow through with backpressure, from your LLM client to your local server and back.',
+  },
+  {
+    title: 'Dashboard',
+    body: 'See every server, its usage, and your plan at web.mcpwarp.io. Enable, disable, upgrade.',
+  },
+];
+---
+
+<Marketing
+  title="MCP Warp"
+  description="Give your local MCP servers a public, OAuth-protected URL."
+>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>Give your local MCP servers a public, OAuth-protected URL</h1>
+        <p class="subtitle">
+          Like ngrok, but built for MCP. One command, and Claude, ChatGPT, Cursor and VS Code
+          can reach the MCP servers on your machine.
+        </p>
+        <div class="cta-row">
+          <a class="cta cta-primary" href="/docs/get-started/">Get started</a>
+          <a class="cta cta-secondary" href="https://web.mcpwarp.io">Sign in</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <Image src={hero} alt="MCP Warp connecting local MCP servers to LLM clients" width={960} priority />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Three commands to a public URL</h2>
+    <div class="steps">
+      {
+        steps.map((step) => (
+          <div class="step">
+            <div class="step-number">{step.n}</div>
+            <p class="step-label">{step.label}</p>
+            <pre><code>{step.code}</code></pre>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Everything you need to expose an MCP server</h2>
+    <div class="features">
+      {
+        features.map((feature) => (
+          <div class="feature-card">
+            <h3>{feature.title}</h3>
+            <p>{feature.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section how-it-works">
+    <h2>How it works</h2>
+    <ol>
+      <li>Your MCP client sends a request to your server's public URL.</li>
+      <li>The tunnel edge verifies the OAuth token and checks that you own the server.</li>
+      <li>The request is forwarded over a persistent connection to <code>mcpwarp up</code> on your machine.</li>
+      <li><code>mcpwarp</code> forwards it to your local MCP server, stdio or HTTP, and streams the response back.</li>
+    </ol>
+  </section>
+
+  <section class="section pricing-teaser">
+    <h2>Simple pricing</h2>
+    <p>Free to try. $5/month for unlimited requests. $10/month for unlimited servers.</p>
+    <a class="cta cta-secondary" href="/pricing/">See pricing</a>
+  </section>
+</Marketing>
+
+<style>
+  .hero {
+    padding: 4rem 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .hero-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 64rem) {
+    .hero-inner {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .hero-copy h1 {
+    font-size: 2.5rem;
+    line-height: 1.1;
+    margin: 0 0 1rem;
+    color: var(--sl-color-white);
+  }
+  .subtitle {
+    font-size: 1.125rem;
+    color: var(--sl-color-gray-2);
+    margin: 0 0 1.75rem;
+    max-width: 40rem;
+  }
+  .cta-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 0.5rem;
+    padding: 0.65rem 1.4rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .cta-primary {
+    background-color: var(--color-accent-400);
+    color: var(--color-gray-950);
+  }
+  .cta-primary:hover {
+    background-color: var(--color-accent-300);
+  }
+  .cta-secondary {
+    background-color: transparent;
+    color: var(--sl-color-white);
+    border: 1px solid var(--sl-color-gray-3);
+  }
+  .cta-secondary:hover {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+  .hero-image :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 60px -20px var(--color-brand-glow);
+  }
+
+  .section {
+    max-width: 72rem;
+    margin: 0 auto 4rem;
+    padding: 0 1.5rem;
+  }
+  .section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--sl-color-white);
+  }
+
+  .steps {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 64rem) {
+    .steps {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .step {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    background-color: var(--sl-color-gray-6);
+  }
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    background-color: var(--color-accent-500);
+    color: var(--color-gray-950);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .step-label {
+    font-weight: 600;
+    color: var(--sl-color-white);
+    margin: 0 0 0.75rem;
+  }
+  .step pre {
+    margin: 0;
+    font-size: 0.85rem;
+    overflow-x: auto;
+  }
+
+  .features {
+    display: grid;
+    gap: 1.25rem;
+  }
+  @media (min-width: 48rem) {
+    .features {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 64rem) {
+    .features {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .feature-card {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+  .feature-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+    color: var(--sl-color-accent-high);
+  }
+  .feature-card p {
+    margin: 0;
+    color: var(--sl-color-gray-3);
+    font-size: 0.95rem;
+  }
+
+  .how-it-works ol {
+    color: var(--sl-color-gray-3);
+    line-height: 1.8;
+    padding-left: 1.25rem;
+  }
+
+  .pricing-teaser {
+    text-align: center;
+  }
+  .pricing-teaser p {
+    color: var(--sl-color-gray-3);
+    margin-bottom: 1.5rem;
+  }
+</style>

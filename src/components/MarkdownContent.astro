@@ -1,0 +1,16 @@
+---
+// A `[starlight-blog] ... already have a MarkdownContent override` warning
+// during build is expected: it comes from composing starlight-blog and
+// starlight-image-zoom's overrides by hand below, which is intentional.
+// Both starlight-blog and starlight-image-zoom want to own the
+// `MarkdownContent` override (blog metadata/footer on post pages, and the
+// click-to-zoom behavior everywhere). Composing them by hand here keeps
+// both working: render the zoom behavior, then delegate to starlight-blog's
+// own override (which already falls back to Starlight's default on
+// non-blog pages).
+import BlogMarkdownContent from 'starlight-blog/overrides/MarkdownContent.astro';
+import ImageZoom from 'starlight-image-zoom/components/ImageZoom.astro';
+---
+
+<ImageZoom />
+<BlogMarkdownContent><slot /></BlogMarkdownContent>

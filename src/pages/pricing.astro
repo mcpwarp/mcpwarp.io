@@ -1,0 +1,288 @@
+---
+import Marketing from '../layouts/Marketing.astro';
+
+const tiers = [
+  {
+    name: 'Free',
+    price: '$0',
+    period: '',
+    highlight: false,
+    features: ['100 requests/month', '1 server'],
+    cta: { label: 'Get started', href: '/docs/get-started/' },
+  },
+  {
+    name: 'Plus',
+    price: '$5',
+    period: '/month',
+    highlight: false,
+    features: ['Unlimited requests', '1 server'],
+    cta: { label: 'Upgrade', href: 'https://web.mcpwarp.io/settings' },
+  },
+  {
+    name: 'Pro',
+    price: '$10',
+    period: '/month',
+    highlight: true,
+    features: ['Unlimited requests', 'Unlimited servers (fair use)'],
+    cta: { label: 'Upgrade', href: 'https://web.mcpwarp.io/settings' },
+  },
+];
+
+const faqs = [
+  {
+    q: 'What counts as a request?',
+    a: 'One HTTP request an MCP client makes to your public URL counts as one request.',
+  },
+  {
+    q: 'What happens at the limit?',
+    a: 'On the Free plan, once you hit 100 requests in a month, further requests get a hard 429 block until the counter resets at the start of the next UTC month.',
+  },
+  {
+    q: 'Can I cancel?',
+    a: "Yes, any time from the dashboard. Downgrading below your current server count doesn't delete servers, it only blocks creating new ones.",
+  },
+  {
+    q: 'Do I need an account?',
+    a: 'Yes, always. There is no anonymous access — every request to a public URL needs a valid OAuth token tied to an account.',
+  },
+  {
+    q: 'What about multiple machines?',
+    a: 'You can run mcpwarp up on more than one machine at a time; each server you expose still counts toward your plan.',
+  },
+];
+---
+
+<Marketing title="Pricing" description="MCP Warp pricing: Free, Plus and Pro plans.">
+  <section class="intro">
+    <h1>Pricing</h1>
+    <p>
+      Start free. Upgrade when you need more requests or more than one server. Usage resets at
+      the start of every UTC month.
+    </p>
+  </section>
+
+  <section class="cards">
+    {
+      tiers.map((tier) => (
+        <div class={`card ${tier.highlight ? 'card-highlight' : ''}`}>
+          {tier.highlight && <p class="badge">Most popular</p>}
+          <h2>{tier.name}</h2>
+          <p class="price">
+            {tier.price}
+            <span class="period">{tier.period}</span>
+          </p>
+          <ul>
+            {tier.features.map((f) => (
+              <li>{f}</li>
+            ))}
+          </ul>
+          <a class={`cta ${tier.highlight ? 'cta-primary' : 'cta-secondary'}`} href={tier.cta.href}>
+            {tier.cta.label}
+          </a>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="compare">
+    <h2>Compare plans</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Free</th>
+            <th>Plus</th>
+            <th>Pro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Price</td>
+            <td>$0</td>
+            <td>$5/month</td>
+            <td>$10/month</td>
+          </tr>
+          <tr>
+            <td>Requests</td>
+            <td>100/month</td>
+            <td>Unlimited</td>
+            <td>Unlimited</td>
+          </tr>
+          <tr>
+            <td>Servers</td>
+            <td>1</td>
+            <td>1</td>
+            <td>Unlimited (fair use)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="faq">
+    <h2>FAQ</h2>
+    <dl>
+      {
+        faqs.map((faq) => (
+          <div class="faq-item">
+            <dt>{faq.q}</dt>
+            <dd>{faq.a}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+</Marketing>
+
+<style>
+  .intro,
+  .cards,
+  .compare,
+  .faq {
+    max-width: 64rem;
+    margin: 0 auto 3.5rem;
+    padding: 0 1.5rem;
+  }
+  .intro {
+    text-align: center;
+    padding-top: 1rem;
+  }
+  .intro h1 {
+    font-size: 2.25rem;
+    color: var(--sl-color-white);
+  }
+  .intro p {
+    color: var(--sl-color-gray-3);
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  .cards {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 56rem) {
+    .cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .card {
+    position: relative;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    padding: 2rem 1.75rem;
+    background-color: var(--sl-color-gray-6);
+    display: flex;
+    flex-direction: column;
+  }
+  .card-highlight {
+    border-color: var(--sl-color-accent);
+    box-shadow: 0 0 0 1px var(--sl-color-accent);
+  }
+  .badge {
+    position: absolute;
+    top: -0.75rem;
+    left: 1.75rem;
+    background-color: var(--color-accent-400);
+    color: var(--color-gray-950);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.6rem;
+    border-radius: 9999px;
+    margin: 0;
+  }
+  .card h2 {
+    margin: 0 0 0.5rem;
+    color: var(--sl-color-white);
+  }
+  .price {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--sl-color-white);
+    margin: 0 0 1.25rem;
+  }
+  .period {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--sl-color-gray-2);
+  }
+  .card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.75rem;
+    color: var(--sl-color-gray-2);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .card ul li::before {
+    content: '✓ ';
+    color: var(--sl-color-accent-high);
+    font-weight: 700;
+  }
+  .card .cta {
+    margin-top: auto;
+    text-align: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .cta-primary {
+    background-color: var(--color-accent-400);
+    color: var(--color-gray-950);
+  }
+  .cta-primary:hover {
+    background-color: var(--color-accent-300);
+  }
+  .cta-secondary {
+    background-color: transparent;
+    color: var(--sl-color-white);
+    border: 1px solid var(--sl-color-gray-3);
+  }
+  .cta-secondary:hover {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent-high);
+  }
+
+  .compare h2,
+  .faq h2 {
+    color: var(--sl-color-white);
+    margin-bottom: 1.25rem;
+  }
+  .table-wrap {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    color: var(--sl-color-gray-2);
+  }
+  th {
+    color: var(--sl-color-gray-2);
+    font-weight: 600;
+  }
+
+  .faq dl {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .faq dt {
+    font-weight: 600;
+    color: var(--sl-color-white);
+    margin-bottom: 0.35rem;
+  }
+  .faq dd {
+    margin: 0;
+    color: var(--sl-color-gray-3);
+  }
+</style>

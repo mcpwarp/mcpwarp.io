@@ -1,9 +1,9 @@
-# Hugo
-/public/
-/resources/_gen/
-/assets/jsconfig.json
-hugo_stats.json
-.hugo_build.lock
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
 
 # OS
 .DS_Store
@@ -14,3 +14,7 @@ Thumbs.db
 
 # Claude Code drafts
 .claude-draft/
+
+# environment variables
+.env
+.env.production

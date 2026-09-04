@@ -1,0 +1,54 @@
+---
+import Marketing from '../layouts/Marketing.astro';
+---
+
+<Marketing title="About" description="About MCP Warp.">
+  <section class="about">
+    <h1>About MCP Warp</h1>
+    <p>
+      MCP Warp is ngrok for MCP servers. You run MCP servers on your own machine, and MCP Warp
+      gives each one a public, OAuth-protected URL that Claude, ChatGPT, Cursor, VS Code and
+      other MCP clients can connect to — without you having to run or manage any infrastructure.
+    </p>
+
+    <h2>Who builds it</h2>
+    <p>
+      MCP Warp is built by <a href="https://anatoly.dev">Anatoly</a> (<a
+        href="https://www.linkedin.com/in/anatolyt/">LinkedIn</a
+      >).
+    </p>
+
+    <h2>Status</h2>
+    <p>MCP Warp is in early access and actively developed.</p>
+
+    <h2>Links</h2>
+    <ul>
+      <li><a href="https://github.com/mcpwarp">GitHub</a></li>
+      <li><a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a></li>
+    </ul>
+  </section>
+</Marketing>
+
+<style>
+  .about {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 3rem;
+    color: var(--sl-color-gray-3);
+  }
+  .about h1 {
+    color: var(--sl-color-white);
+    font-size: 2.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .about h2 {
+    color: var(--sl-color-white);
+    margin-top: 2rem;
+  }
+  .about a {
+    color: var(--sl-color-accent-high);
+  }
+  .about a:hover {
+    text-decoration-thickness: 2px;
+  }
+</style>

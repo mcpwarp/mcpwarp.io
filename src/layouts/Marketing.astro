@@ -1,0 +1,37 @@
+---
+// Shared layout for custom marketing pages (landing, pricing, ...). Wraps
+// Starlight's own page shell so the header, footer and theme toggle stay
+// consistent with the docs, then lets the page render fully custom,
+// Tailwind-styled sections in the default slot.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<StarlightPage
+  frontmatter={{
+    title,
+    description,
+    template: 'splash',
+    tableOfContents: false,
+  }}
+>
+  <div class="mcpwarp-marketing">
+    <slot />
+  </div>
+</StarlightPage>
+
+<style>
+  /* Splash template adds its own max-width centering; let marketing
+     sections control their own width edge-to-edge. `.sl-markdown-content`
+     is an ancestor of `.mcpwarp-marketing`, not a descendant, so target it
+     with :has() instead of a (never-matching) descendant combinator. */
+  :global(.sl-markdown-content):has(> .mcpwarp-marketing) {
+    max-width: none;
+  }
+</style>

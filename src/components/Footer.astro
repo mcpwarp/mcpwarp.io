@@ -1,0 +1,98 @@
+---
+// Extends Starlight's default Footer with MCP Warp contact/legal links and
+// a copyright line, reusing the built-in EditLink/LastUpdated/Pagination.
+import EditLink from 'virtual:starlight/components/EditLink';
+import LastUpdated from 'virtual:starlight/components/LastUpdated';
+import Pagination from 'virtual:starlight/components/Pagination';
+import config from 'virtual:starlight/user-config';
+import { Icon } from '@astrojs/starlight/components';
+---
+
+<footer class="sl-flex">
+	<div class="meta sl-flex">
+		<EditLink />
+		<LastUpdated />
+	</div>
+	<Pagination />
+
+	<div class="mcpwarp-footer sl-flex">
+		<div class="mcpwarp-footer-links sl-flex">
+			<a href="mailto:support@mcpwarp.io">Email</a>
+			<a href="/privacy/">Privacy</a>
+			<a href="/terms/">Terms</a>
+		</div>
+		<p class="mcpwarp-copyright">© 2026 MCP Warp</p>
+	</div>
+
+	{
+		config.credits && (
+			<a class="kudos sl-flex" href="https://starlight.astro.build">
+				<Icon name={'starlight'} /> {Astro.locals.t('builtWithStarlight.label')}
+			</a>
+		)
+	}
+</footer>
+
+<style>
+	@layer starlight.core {
+		footer {
+			flex-direction: column;
+			gap: 1.5rem;
+		}
+		.meta {
+			gap: 0.75rem 3rem;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			margin-top: 3rem;
+			font-size: var(--sl-text-sm);
+			color: var(--sl-color-gray-3);
+		}
+		.meta > :global(p:only-child) {
+			margin-inline-start: auto;
+		}
+
+		.mcpwarp-footer {
+			flex-direction: column;
+			gap: 0.5rem;
+			align-items: center;
+			padding-top: 1.5rem;
+			border-top: 1px solid var(--sl-color-gray-5);
+			font-size: var(--sl-text-xs);
+			color: var(--sl-color-gray-3);
+			text-align: center;
+		}
+		.mcpwarp-footer-links {
+			gap: 1.5rem;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		.mcpwarp-footer-links a {
+			color: var(--sl-color-gray-3);
+			text-decoration: none;
+		}
+		.mcpwarp-footer-links a:hover {
+			color: var(--sl-color-white);
+		}
+		.mcpwarp-copyright {
+			margin: 0;
+		}
+
+		.kudos {
+			align-items: center;
+			gap: 0.5em;
+			margin: 0 auto;
+			font-size: var(--sl-text-xs);
+			text-decoration: none;
+			color: var(--sl-color-gray-3);
+		}
+		.kudos:hover {
+			color: var(--sl-color-white);
+		}
+	}
+
+	@layer starlight.components {
+		.kudos :global(svg) {
+			color: var(--sl-color-orange);
+		}
+	}
+</style>
