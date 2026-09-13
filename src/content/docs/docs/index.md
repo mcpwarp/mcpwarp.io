@@ -3,7 +3,7 @@ title: MCP Warp docs
 description: What MCP Warp is and where to go next.
 ---
 
-**MCP Warp gives the MCP servers running on your machine a public, OAuth-protected URL that Claude, ChatGPT, Cursor, VS Code and other MCP clients can connect to.**
+**MCP Warp gives the MCP servers running on your machine a public, OAuth-protected URL that Claude, ChatGPT, VS Code and any Streamable HTTP MCP client can connect to.**
 
 It's ngrok for MCP servers: you keep running your servers locally, MCP Warp handles the public endpoint, TLS, and auth.
 

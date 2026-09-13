@@ -20,7 +20,13 @@ claude mcp add --transport http <name> <url>
 For example:
 
 ```sh
-claude mcp add --transport http notes https://91bcf40a.mcpwarp.io/mcp
+claude mcp add --transport http notes https://notes-anatoly.tunnel.mcpwarp.io/mcp
 ```
 
 Claude Code will run through the OAuth flow the first time it connects.
+
+<!-- SCREENSHOT: claude-connect — Claude.ai custom connector dialog with a *.tunnel.mcpwarp.io/mcp URL -->
+
+*Screenshot coming: the Claude.ai custom connector dialog with a `*.tunnel.mcpwarp.io/mcp` URL.*
+
+MCP Warp isn't certified by Anthropic — it's built to work with Claude (claude.ai, Claude Desktop, Claude Code) as a standard Streamable HTTP MCP client.

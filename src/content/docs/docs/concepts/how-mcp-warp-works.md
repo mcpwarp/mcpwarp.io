@@ -7,7 +7,7 @@ description: The request path from an LLM client to your local MCP server, end t
 
 ## Request path
 
-1. Your MCP client sends an HTTPS request to `https://<id>.mcpwarp.io/mcp`.
+1. Your MCP client sends an HTTPS request to `https://<name>-<username>.tunnel.mcpwarp.io/mcp`.
 2. The MCP Warp edge receives it and verifies the JWT: signature, issuer, expiry, and that the audience matches that specific server's URL.
 3. It checks that the token's user is the server's owner, that the account is in good standing, and that the account is within quota.
 4. It forwards the request over a persistent WebSocket connection to the machine running `mcpwarp up`.
@@ -32,3 +32,11 @@ Your MCP server
 - Your local server never needs to be reachable from the internet directly — only the outbound WebSocket from `mcpwarp up` matters.
 - Auth is terminated at the edge, not on your machine — see [Security](/docs/concepts/security/).
 - The path is fully streaming, so long-running tool calls and large responses work the same as they would locally.
+
+## The dashboard
+
+The web dashboard at [web.mcpwarp.io](https://web.mcpwarp.io) lists every server you've registered, its public URL, and whether it's online.
+
+<!-- SCREENSHOT: dashboard-servers — web.mcpwarp.io server list showing the public URLs and online status -->
+
+*Screenshot coming: the dashboard's server list with public URLs and online status.*

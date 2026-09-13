@@ -3,7 +3,7 @@ title: What is MCP
 description: A quick primer on the Model Context Protocol, for context on what MCP Warp exposes.
 ---
 
-**MCP (Model Context Protocol) is a standard way for LLM clients — Claude, ChatGPT, Cursor, VS Code — to talk to tools and data sources, called MCP servers.**
+**MCP (Model Context Protocol) is a standard way for LLM clients — Claude, ChatGPT, VS Code — to talk to tools and data sources, called MCP servers.**
 
 An MCP server exposes tools, resources, and prompts over a defined protocol. A client connects to a server, discovers what it can do, and calls it on the model's behalf — reading a file, querying an API, controlling an app.
 

@@ -24,7 +24,7 @@ description: Configure mcpwarp to spawn a local MCP server and expose it over st
 - `command` — the executable to run.
 - `args` — arguments passed to it.
 - `env` — extra environment variables for the child process.
-- `name` — must match `^[a-z0-9][a-z0-9-]*$` and be unique in your config. Renaming a server mints a brand-new URL; the old one stops working.
+- `name` — must match `^[a-z0-9]([a-z0-9-]*[a-z0-9])?$`, 1–30 characters, and be unique in your config. It's also the public URL slug. Renaming a server mints a brand-new URL; the old one lingers offline in the dashboard until you delete it.
 
 ## Start it
 
@@ -37,7 +37,7 @@ mcpwarp up
 
 ```
 NAME     KIND   URL
-blender  stdio  https://7f3a1c2e.mcpwarp.io/mcp
+blender  stdio  https://blender-anatoly.tunnel.mcpwarp.io/mcp
 ```
 
 ## How the stdio bridge works

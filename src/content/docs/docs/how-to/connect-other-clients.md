@@ -1,23 +1,11 @@
 ---
 title: Connect other clients
-description: Connect an MCP Warp URL to Cursor, VS Code, or any Streamable HTTP MCP client.
+description: Connect an MCP Warp URL to VS Code or any Streamable HTTP MCP client.
 ---
 
 **Any client that speaks Streamable HTTP MCP can use an MCP Warp URL directly — point it at the URL and let it run the OAuth flow.**
 
-## Cursor
-
-Add the server to `mcp.json` with a `url`:
-
-```json title="mcp.json"
-{
-  "mcpServers": {
-    "notes": {
-      "url": "https://91bcf40a.mcpwarp.io/mcp"
-    }
-  }
-}
-```
+MCP Warp isn't certified by any client vendor — it's built to work with any standard Streamable HTTP MCP client.
 
 ## VS Code
 
@@ -28,7 +16,7 @@ Add the server to `.vscode/mcp.json` with `"type": "http"`:
   "servers": {
     "notes": {
       "type": "http",
-      "url": "https://91bcf40a.mcpwarp.io/mcp"
+      "url": "https://notes-anatoly.tunnel.mcpwarp.io/mcp"
     }
   }
 }

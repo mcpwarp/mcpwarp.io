@@ -11,6 +11,11 @@ description: Every environment variable mcpwarp reads, and its default.
 | `MCPWARP_AUTH_REALM` | `mcpwarp` | The auth realm. |
 | `MCPWARP_AUTH_CLIENT_ID` | `mcpwarp-cli` | The OAuth client ID the CLI authenticates as. |
 | `MCPWARP_CONNECT_URL` | `wss://connect.mcpwarp.io` | The tunnel WebSocket endpoint `mcpwarp up` connects to. |
-| `MCPWARP_WEB_URL` | `https://mcpwarp.io` | The web app URL used in messages (for example, quota errors). |
+| `MCPWARP_WEB_URL` | `https://web.mcpwarp.io` | The web app URL used in messages (for example, quota errors). |
+| `MCPWARP_TOKEN` | unset | A personal access token (`mcpwarp_pat_...`). When set, skips interactive login — useful headless or in CI. |
+| `MCPWARP_DEBUG` | unset | Same as `--verbose`. |
+| `MCPWARP_NO_UPDATE_NOTIFIER` | unset | Skips the once-per-24h update notice. |
+| `CI` | unset | When set, also skips the update notice, same as `MCPWARP_NO_UPDATE_NOTIFIER`. |
+| `NO_COLOR` | unset | Disables colored output. |
 
 `--issuer` and `--connect-url` (see [CLI reference](/docs/reference/cli/)) override `MCPWARP_AUTH_URL` and `MCPWARP_CONNECT_URL` respectively for a single invocation.

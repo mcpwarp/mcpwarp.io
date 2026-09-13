@@ -7,7 +7,8 @@ const steps = [
   {
     n: '1',
     label: 'Install',
-    code: 'npm install -g mcpwarp',
+    code: `brew tap mcpwarp/tap
+brew install --cask mcpwarp`,
   },
   {
     n: '2',
@@ -19,9 +20,9 @@ const steps = [
     label: 'Go',
     code: `mcpwarp up
 
-NAME     KIND   URL
-blender  stdio  https://7f3a1c2e.mcpwarp.io/mcp
-notes    http   https://91bcf40a.mcpwarp.io/mcp`,
+NAME     KIND   STATE   URL
+blender  stdio  active  https://blender-anatoly.tunnel.mcpwarp.io/mcp
+notes    http   active  https://notes-anatoly.tunnel.mcpwarp.io/mcp`,
   },
 ];
 
@@ -39,8 +40,8 @@ const features = [
     body: 'Each server gets its own subdomain, so OAuth credential caches in your clients never collide.',
   },
   {
-    title: 'Works with your tools',
-    body: 'Claude, ChatGPT, Cursor, VS Code and any Streamable HTTP MCP client can connect directly.',
+    title: 'Built for standard MCP clients',
+    body: 'Built for Claude, ChatGPT, VS Code and any Streamable HTTP MCP client.',
   },
   {
     title: 'Streaming end-to-end',
@@ -48,7 +49,7 @@ const features = [
   },
   {
     title: 'Dashboard',
-    body: 'See every server, its usage, and your plan at web.mcpwarp.io. Enable, disable, upgrade.',
+    body: 'See every server, its usage, and your plan at web.mcpwarp.io. Enable or disable at will.',
   },
 ];
 ---
@@ -60,10 +61,13 @@ const features = [
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-copy">
+        <p class="alpha-notice">
+          Private alpha — sign-up is closed. <a href="mailto:support@mcpwarp.io">Request early access</a>.
+        </p>
         <h1>Give your local MCP servers a public, OAuth-protected URL</h1>
         <p class="subtitle">
-          Like ngrok, but built for MCP. One command, and Claude, ChatGPT, Cursor and VS Code
-          can reach the MCP servers on your machine.
+          Like ngrok, but built for MCP. One command, and Claude, ChatGPT, VS Code and any
+          Streamable HTTP MCP client can reach the MCP servers on your machine.
         </p>
         <div class="cta-row">
           <a class="cta cta-primary" href="/docs/get-started/">Get started</a>
@@ -89,6 +93,7 @@ const features = [
         ))
       }
     </div>
+    <!-- SCREENSHOT: tui-up — mcpwarp up TUI with two servers, one stdio one http, both active, log pane open -->
   </section>
 
   <section class="section">
@@ -103,6 +108,7 @@ const features = [
         ))
       }
     </div>
+    <!-- SCREENSHOT: dashboard-servers — web.mcpwarp.io server list showing the public URLs and online status -->
   </section>
 
   <section class="section how-it-works">
@@ -117,7 +123,7 @@ const features = [
 
   <section class="section pricing-teaser">
     <h2>Simple pricing</h2>
-    <p>Free to try. $5/month for unlimited requests. $10/month for unlimited servers.</p>
+    <p>Free during the private alpha. Paid plans for unlimited requests and servers are coming later.</p>
     <a class="cta cta-secondary" href="/pricing/">See pricing</a>
   </section>
 </Marketing>
@@ -138,6 +144,19 @@ const features = [
     .hero-inner {
       grid-template-columns: 1fr 1fr;
     }
+  }
+  .alpha-notice {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--sl-color-gray-2);
+    background-color: var(--sl-color-gray-6);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 9999px;
+    padding: 0.35rem 0.9rem;
+    margin: 0 0 1.25rem;
+  }
+  .alpha-notice a {
+    color: var(--sl-color-accent-high);
   }
   .hero-copy h1 {
     font-size: 2.5rem;

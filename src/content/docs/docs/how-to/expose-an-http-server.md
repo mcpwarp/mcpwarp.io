@@ -16,7 +16,7 @@ description: Configure mcpwarp to proxy an already-running Streamable HTTP MCP s
 ```
 
 - `url` — the local Streamable HTTP endpoint mcpwarp should proxy to.
-- `name` — must match `^[a-z0-9][a-z0-9-]*$` and be unique in your config. Renaming a server mints a brand-new URL; the old one stops working.
+- `name` — must match `^[a-z0-9]([a-z0-9-]*[a-z0-9])?$`, 1–30 characters, and be unique in your config. It's also the public URL slug. Renaming a server mints a brand-new URL; the old one lingers offline in the dashboard until you delete it.
 
 The legacy 2024-11-05 HTTP+SSE transport (a `GET /sse` endpoint plus `POST /messages`) is **not** supported. Your server needs to speak Streamable HTTP.
 
@@ -29,7 +29,7 @@ mcpwarp up
 
 ```
 NAME   KIND   URL
-notes  http   https://91bcf40a.mcpwarp.io/mcp
+notes  http   https://notes-anatoly.tunnel.mcpwarp.io/mcp
 ```
 
 mcpwarp proxies requests to your local server and streams the response back end to end, with backpressure.

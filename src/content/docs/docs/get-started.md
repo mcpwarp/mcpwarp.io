@@ -5,18 +5,61 @@ description: Install mcpwarp, log in, and expose your first MCP server in about 
 
 **This page takes you from nothing installed to a public URL for a local MCP server, in about five minutes.**
 
+MCP Warp is currently in private alpha. Sign-up is closed — email [support@mcpwarp.io](mailto:support@mcpwarp.io) to request access.
+
 ## Install
 
-MCP Warp is a CLI, distributed as the `mcpwarp` npm package. Node 20+ is required.
+MCP Warp is a single static binary, `mcpwarp`. No Node, no npm.
+
+### Homebrew (macOS/Linux)
 
 ```sh
-npm install -g mcpwarp
+brew tap mcpwarp/tap
+brew trust --tap mcpwarp/tap   # required once, on Homebrew 6+
+brew install --cask mcpwarp
 ```
 
-Or run it without installing:
+Upgrade with `brew upgrade --cask mcpwarp`.
+
+### Scoop (Windows)
 
 ```sh
-npx mcpwarp up
+scoop bucket add mcpwarp https://github.com/mcpwarp/scoop-bucket
+scoop install mcpwarp
+```
+
+Upgrade with `scoop update mcpwarp`.
+
+### Linux packages
+
+Download the `.deb`, `.rpm`, or `.apk` from the [latest release](https://github.com/mcpwarp/cli/releases/latest):
+
+**Debian/Ubuntu**
+
+```sh
+sudo apt install ./mcpwarp_*.deb
+```
+
+**Fedora/RHEL**
+
+```sh
+sudo dnf install ./mcpwarp_*.rpm
+```
+
+**Alpine**
+
+```sh
+sudo apk add --allow-untrusted mcpwarp_*.apk
+```
+
+### Manual install
+
+Download the tar.gz (macOS/Linux) or zip (Windows) for your platform from the [latest release](https://github.com/mcpwarp/cli/releases/latest), and verify against `checksums.txt` (sha256).
+
+macOS binaries are unsigned outside the cask, so remove the quarantine flag once after extracting:
+
+```sh
+xattr -d com.apple.quarantine ./mcpwarp
 ```
 
 ## Log in
@@ -30,6 +73,10 @@ This opens your browser for a device-flow login. If a browser can't be opened (f
 ```sh
 mcpwarp login --no-browser
 ```
+
+<!-- SCREENSHOT: login-device-code — terminal showing "To log in, open: ..." and the code -->
+
+*Screenshot coming: terminal showing the device-flow login URL and code.*
 
 Credentials are stored per-issuer under `~/.mcpwarp/credentials/`, mode `0600`.
 
@@ -59,12 +106,33 @@ mcpwarp status
 mcpwarp up
 ```
 
-`mcpwarp up` connects, registers every configured server, and prints a table of public URLs. It stays in the foreground until you press Ctrl+C.
+`mcpwarp up` connects, registers every configured server, and prints a table of public URLs. It stays in the foreground until you press Ctrl+C. On a terminal (stdin and stdout both a TTY) it runs a full-screen TUI; otherwise, or with `--no-tui`, it prints plain lines instead.
 
 ```
 NAME     KIND   URL
-notes    http   https://91bcf40a.mcpwarp.io/mcp
+notes    http   https://notes-anatoly.tunnel.mcpwarp.io/mcp
 ```
+
+<!-- SCREENSHOT: tui-up — mcpwarp up TUI with two servers, one stdio one http, both active, log pane open -->
+
+*Screenshot coming: the `mcpwarp up` TUI with two active servers and the log pane open.*
+
+On first `up`, you may see a `USERNAME_REQUIRED` error — sign in once at [web.mcpwarp.io](https://web.mcpwarp.io) to pick a username, then rerun `mcpwarp up`.
+
+## Headless and CI
+
+For scripts, services, or CI, skip the TUI and use a personal access token instead of an interactive login:
+
+```sh
+export MCPWARP_TOKEN=mcpwarp_pat_...
+mcpwarp up --no-tui
+```
+
+Mint a token from the dashboard at [web.mcpwarp.io](https://web.mcpwarp.io) — it's shown once.
+
+<!-- SCREENSHOT: pat-create — dashboard personal access token creation dialog with the token shown once -->
+
+*Screenshot coming: the dashboard's personal access token creation dialog.*
 
 ## Paste the URL into a client
 

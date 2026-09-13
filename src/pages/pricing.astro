@@ -6,7 +6,7 @@ const tiers = [
     name: 'Free',
     price: '$0',
     period: '',
-    highlight: false,
+    highlight: true,
     features: ['100 requests/month', '1 server'],
     cta: { label: 'Get started', href: '/docs/get-started/' },
   },
@@ -15,16 +15,18 @@ const tiers = [
     price: '$5',
     period: '/month',
     highlight: false,
+    comingLater: true,
     features: ['Unlimited requests', '1 server'],
-    cta: { label: 'Upgrade', href: 'https://web.mcpwarp.io/settings' },
+    cta: { label: 'Request early access', href: 'mailto:support@mcpwarp.io' },
   },
   {
     name: 'Pro',
     price: '$10',
     period: '/month',
-    highlight: true,
+    highlight: false,
+    comingLater: true,
     features: ['Unlimited requests', 'Unlimited servers (fair use)'],
-    cta: { label: 'Upgrade', href: 'https://web.mcpwarp.io/settings' },
+    cta: { label: 'Request early access', href: 'mailto:support@mcpwarp.io' },
   },
 ];
 
@@ -39,15 +41,11 @@ const faqs = [
   },
   {
     q: 'Can I cancel?',
-    a: "Yes, any time from the dashboard. Downgrading below your current server count doesn't delete servers, it only blocks creating new ones.",
+    a: 'There is nothing to cancel yet: everyone is on Free during the private alpha. Paid plans are not purchasable.',
   },
   {
     q: 'Do I need an account?',
     a: 'Yes, always. There is no anonymous access — every request to a public URL needs a valid OAuth token tied to an account.',
-  },
-  {
-    q: 'What about multiple machines?',
-    a: 'You can run mcpwarp up on more than one machine at a time; each server you expose still counts toward your plan.',
   },
 ];
 ---
@@ -56,8 +54,8 @@ const faqs = [
   <section class="intro">
     <h1>Pricing</h1>
     <p>
-      Start free. Upgrade when you need more requests or more than one server. Usage resets at
-      the start of every UTC month.
+      MCP Warp is in private alpha — everyone is on Free for now. Plus and Pro are planned and
+      coming later. Usage resets at the start of every UTC month.
     </p>
   </section>
 
@@ -65,7 +63,8 @@ const faqs = [
     {
       tiers.map((tier) => (
         <div class={`card ${tier.highlight ? 'card-highlight' : ''}`}>
-          {tier.highlight && <p class="badge">Most popular</p>}
+          {tier.highlight && <p class="badge">Current plan</p>}
+          {tier.comingLater && <p class="badge badge-later">Coming later</p>}
           <h2>{tier.name}</h2>
           <p class="price">
             {tier.price}
@@ -100,8 +99,8 @@ const faqs = [
           <tr>
             <td>Price</td>
             <td>$0</td>
-            <td>$5/month</td>
-            <td>$10/month</td>
+            <td>$5/month (coming later)</td>
+            <td>$10/month (coming later)</td>
           </tr>
           <tr>
             <td>Requests</td>
@@ -191,6 +190,10 @@ const faqs = [
     padding: 0.15rem 0.6rem;
     border-radius: 9999px;
     margin: 0;
+  }
+  .badge-later {
+    background-color: var(--sl-color-gray-4);
+    color: var(--sl-color-black);
   }
   .card h2 {
     margin: 0 0 0.5rem;
