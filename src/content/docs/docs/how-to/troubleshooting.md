@@ -15,7 +15,7 @@ can look different in each place — for example, a server disabled in the dashb
 | HTTP status | Meaning | Fix |
 | --- | --- | --- |
 | `404` | Unknown subdomain, or the server is disabled in the dashboard. | Check the URL is correct; check the server's status in the dashboard. |
-| `429` `{"error":"quota_exceeded",...}` | Your plan's per-request quota is used up for this period. | Wait for the reset. See [Limits and quotas](/docs/reference/limits-and-quotas/). |
+| `429` `{"error":"quota_exceeded",...}` | Your plan's per-request quota is used up for this period. | Upgrade your plan, or wait for the reset. See [Limits and quotas](/docs/reference/limits-and-quotas/) and [Manage your subscription](/docs/how-to/billing/). |
 | `502` | The local server crashed past the restart cap and `mcpwarp up` gave up restarting it. | See `local server '<name>' is not running` below. |
 | `503` | The server is enabled, but no `mcpwarp up` is currently connected for it (agent offline). | Make sure `mcpwarp up` is running and connected on the machine that hosts this server. |
 
@@ -30,7 +30,7 @@ can look different in each place — for example, a server disabled in the dashb
 | `unknown service` (404) | The tunnel edge doesn't recognize the Host header. | Misconfiguration on the tunnel side — check the URL is correct. |
 | `service disabled` (503) | The tunnel has disabled this server (dashboard toggle-off, or a backend policy decision). Your MCP client will see `404` at the public URL. | Check your account and re-enable if needed; it resumes without a restart. |
 | `bad request` (400/431) | The request head was malformed. | Run with `--verbose` for details. |
-| `QUOTA_EXCEEDED ... Upgrade your plan at web.mcpwarp.io/settings` | Your plan's server limit is reached (this is a `register` rejection, not the per-request quota above). | Remove a server, or email support@mcpwarp.io to request a higher limit. See [Limits and quotas](/docs/reference/limits-and-quotas/). |
+| `QUOTA_EXCEEDED ... Upgrade your plan at web.mcpwarp.io/settings` | Your plan's server limit is reached (this is a `register` rejection, not the per-request quota above). | Upgrade to Pro, or remove a server. See [Limits and quotas](/docs/reference/limits-and-quotas/) and [Manage your subscription](/docs/how-to/billing/). |
 | `CONFLICT` | A server with the same name is already registered under a different kind. | Rename the server, or fix the `kind` in your config. |
 | `SERVER_DISABLED` | The server is disabled in the dashboard. | The CLI waits for you to re-enable it in the dashboard. |
 | `INVALID_NAME` | The server's `name` doesn't match the naming rules. | Fix the slug — see [Config reference](/docs/reference/config/). |

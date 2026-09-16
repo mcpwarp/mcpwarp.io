@@ -6,7 +6,7 @@ const tiers = [
     name: 'Free',
     price: '$0',
     period: '',
-    highlight: true,
+    highlight: false,
     features: ['100 requests/month', '1 server'],
     cta: { label: 'Get started', href: '/docs/get-started/' },
   },
@@ -14,19 +14,17 @@ const tiers = [
     name: 'Plus',
     price: '$5',
     period: '/month',
-    highlight: false,
-    comingLater: true,
+    highlight: true,
     features: ['Unlimited requests', '1 server'],
-    cta: { label: 'Request early access', href: 'mailto:support@mcpwarp.io' },
+    cta: { label: 'Upgrade to Plus', href: 'https://web.mcpwarp.io/settings' },
   },
   {
     name: 'Pro',
     price: '$10',
     period: '/month',
     highlight: false,
-    comingLater: true,
     features: ['Unlimited requests', 'Unlimited servers (fair use)'],
-    cta: { label: 'Request early access', href: 'mailto:support@mcpwarp.io' },
+    cta: { label: 'Upgrade to Pro', href: 'https://web.mcpwarp.io/settings' },
   },
 ];
 
@@ -41,7 +39,11 @@ const faqs = [
   },
   {
     q: 'Can I cancel?',
-    a: 'There is nothing to cancel yet: everyone is on Free during the private alpha. Paid plans are not purchasable.',
+    a: 'Yes, any time. Open Settings &gt; Billing, then "Manage billing" to cancel in the billing portal, or email <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a>. You keep access until the end of the paid period, then the account returns to Free. See <a href="/docs/how-to/billing/">Manage your subscription</a>.',
+  },
+  {
+    q: 'How do refunds work?',
+    a: 'There\'s a 14-day money-back guarantee on your first payment for a paid plan; renewals aren\'t covered. See <a href="/terms/#payments-refunds-and-cancellation">Payments, Refunds, and Cancellation</a> in the Terms for the full policy.',
   },
   {
     q: 'Do I need an account?',
@@ -53,18 +55,14 @@ const faqs = [
 <Marketing title="Pricing" description="MCP Warp pricing: Free, Plus and Pro plans.">
   <section class="intro">
     <h1>Pricing</h1>
-    <p>
-      MCP Warp is in private alpha — everyone is on Free for now. Plus and Pro are planned and
-      coming later. Usage resets at the start of every UTC month.
-    </p>
+    <p>Start free. Upgrade when you need more. Usage resets at the start of every UTC month.</p>
   </section>
 
   <section class="cards">
     {
       tiers.map((tier) => (
         <div class={`card ${tier.highlight ? 'card-highlight' : ''}`}>
-          {tier.highlight && <p class="badge">Current plan</p>}
-          {tier.comingLater && <p class="badge badge-later">Coming later</p>}
+          {tier.highlight && <p class="badge">Most popular</p>}
           <h2>{tier.name}</h2>
           <p class="price">
             {tier.price}
@@ -99,8 +97,8 @@ const faqs = [
           <tr>
             <td>Price</td>
             <td>$0</td>
-            <td>$5/month (coming later)</td>
-            <td>$10/month (coming later)</td>
+            <td>$5/month</td>
+            <td>$10/month</td>
           </tr>
           <tr>
             <td>Requests</td>
@@ -126,7 +124,7 @@ const faqs = [
         faqs.map((faq) => (
           <div class="faq-item">
             <dt>{faq.q}</dt>
-            <dd>{faq.a}</dd>
+            <dd set:html={faq.a} />
           </div>
         ))
       }
@@ -190,10 +188,6 @@ const faqs = [
     padding: 0.15rem 0.6rem;
     border-radius: 9999px;
     margin: 0;
-  }
-  .badge-later {
-    background-color: var(--sl-color-gray-4);
-    color: var(--sl-color-black);
   }
   .card h2 {
     margin: 0 0 0.5rem;
@@ -287,5 +281,8 @@ const faqs = [
   .faq dd {
     margin: 0;
     color: var(--sl-color-gray-3);
+  }
+  .faq dd :global(a) {
+    color: var(--sl-color-accent-high);
   }
 </style>

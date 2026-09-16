@@ -1,23 +1,301 @@
 ---
 import Marketing from '../layouts/Marketing.astro';
+import PaymentProvider from '../components/PaymentProvider.astro';
 ---
 
 <Marketing title="Terms" description="MCP Warp terms of service.">
-  <section class="placeholder">
-    <h1>Terms</h1>
-    <p>Coming soon.</p>
+  <section class="legal">
+    <h1>Terms of Service</h1>
+    <p class="effective-date"><strong>Effective date:</strong> September 13, 2026</p>
+
+    <div class="callout">
+      <p><strong>The short version.</strong> This summary is for convenience only — the full Terms below are what applies.</p>
+      <ul>
+        <li>MCP Warp gives your local MCP servers a public, OAuth-protected URL. You're responsible for what your servers expose and for the account you keep it under.</li>
+        <li>There's a <strong>Free</strong> plan (100 requests/month, 1 server) and paid <strong>Plus</strong> ($5/month) and <strong>Pro</strong> ($10/month) plans. Usage resets at the start of every UTC month.</li>
+        <li>Paid plans are billed through our payment provider, which acts as merchant of record. Cancel anytime from Settings &gt; Billing via the billing portal, or by emailing <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a> — access continues until the end of the period you've paid for. There's a <strong>14-day money-back guarantee</strong> on your first payment.</li>
+        <li>The tunnel relays your MCP traffic — it does not store request or response bodies.</li>
+        <li>The Service is provided <strong>"as is"</strong>, best-effort, with no uptime guarantee.</li>
+        <li>Our liability is limited: at most, what you paid us in the last 12 months.</li>
+      </ul>
+    </div>
+
+    <p>
+      These Terms of Service ("Terms") govern your use of the mcpwarp.io website, the
+      <code>mcpwarp</code> CLI, and the MCP Warp dashboard and tunnel service (collectively, the
+      "Service"). The Service is operated by <a href="https://anatoly.dev">Anatoly Tarnavsky</a>,
+      sole proprietor ("MCP Warp", "we", "us"). By accessing or using the Service, you agree to
+      these Terms.
+    </p>
+
+    <h2>1. Acceptance of Terms</h2>
+    <p>
+      By using mcpwarp.io, the <code>mcpwarp</code> CLI, or the dashboard and tunnel service, you
+      agree to be bound by these Terms. If you do not agree, do not use the Service.
+    </p>
+
+    <h2>2. Description of Service</h2>
+    <p>MCP Warp is a tunnel service for the Model Context Protocol (MCP). The Service includes:</p>
+    <ul>
+      <li>The mcpwarp.io website (documentation and blog)</li>
+      <li>The <code>mcpwarp</code> CLI, a Go binary distributed via Homebrew, Scoop, Linux packages, and GitHub</li>
+      <li>The dashboard at <a href="https://web.mcpwarp.io">web.mcpwarp.io</a>, where you manage servers, tokens, and billing</li>
+      <li>
+        The tunnel infrastructure — a hosted relay that gives each MCP server you register a
+        public, OAuth-protected URL at
+        <code>https://&lt;name&gt;-&lt;username&gt;.tunnel.mcpwarp.io/mcp</code>, so that MCP
+        clients such as Claude, ChatGPT, VS Code, and any Streamable HTTP MCP client can reach it
+      </li>
+    </ul>
+
+    <h2>3. Account Registration and Eligibility</h2>
+    <ul>
+      <li>Accounts are managed through our self-hosted Keycloak identity provider.</li>
+      <li>You must be at least <strong>13 years old</strong> to create an account.</li>
+      <li>Access to your servers is owner-only: there is no sharing and no anonymous access.</li>
+      <li>You are responsible for keeping your account credentials and any personal access tokens (<code>mcpwarp_pat_...</code>) secure, and for all activity under your account.</li>
+      <li>You must provide accurate information when creating your account and choosing your username, which forms part of every tunnel URL you're assigned.</li>
+    </ul>
+
+    <h2>4. Your Responsibilities and Acceptable Use</h2>
+    <p>You agree to:</p>
+    <ul>
+      <li>Use the Service in compliance with all applicable laws.</li>
+      <li>Not use the Service to create, store, or relay illegal, harmful, or infringing content.</li>
+      <li>Not attempt to disrupt, overload, probe, or reverse-engineer the tunnel infrastructure.</li>
+      <li>
+        Take responsibility for what your MCP servers expose. You choose which local servers to
+        register and which MCP clients to authorize — we do not inspect or vouch for the content
+        or behavior of either.
+      </li>
+      <li>
+        Respect the terms of any third-party MCP client (Claude, ChatGPT, VS Code, or otherwise)
+        you connect through the tunnel. We are not responsible for how those clients behave or
+        handle data once a request reaches them.
+      </li>
+      <li>Observe fair use of the Pro plan's unlimited-server allowance — see "Subscription Tiers" below.</li>
+    </ul>
+
+    <h2>5. Subscription Tiers</h2>
+    <p>The Service currently offers three tiers:</p>
+    <ul>
+      <li><strong>Free:</strong> 100 requests/month, 1 server. No payment required.</li>
+      <li><strong>Plus:</strong> unlimited requests, 1 server, for a recurring fee of $5/month.</li>
+      <li><strong>Pro:</strong> unlimited requests, unlimited servers (subject to fair use), for a recurring fee of $10/month.</li>
+    </ul>
+    <p>
+      The quota month is the UTC calendar month. Requests over your plan's quota receive an HTTP
+      <code>429</code> response; the server cap is enforced when you register a new server. We
+      reserve the right to modify tier features, allowances, or pricing with reasonable notice.
+      Changes to paid tier pricing will not apply to a period you've already paid for.
+    </p>
+
+    <h2 id="payments-refunds-and-cancellation">6. Payments, Refunds, and Cancellation</h2>
+    <p>Plus and Pro are billed as recurring monthly subscriptions. The following terms apply to all paid subscriptions.</p>
+    <PaymentProvider />
+    <ul>
+      <li>
+        <strong>Upgrading.</strong> From the dashboard, go to Settings &gt; Billing and choose
+        "Upgrade to Plus" or "Upgrade to Pro." This opens our payment provider's hosted checkout.
+        Your new plan applies as soon as checkout completes.
+      </li>
+      <li>
+        <strong>Billing period and renewal.</strong> Paid plans are sold as monthly subscription
+        periods and renew automatically at the end of each period until cancelled, charged to the
+        payment method on file with our payment provider.
+      </li>
+      <li>
+        <strong>Cancelling.</strong> There is no in-app cancel. From Settings &gt; Billing, choose
+        "Manage billing" to open the billing portal in a new tab, where you can cancel, switch
+        plans, update your payment method, and download invoices — or cancel by emailing
+        <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a>. When you cancel, your
+        paid access <strong>continues until the end of the period you've already paid for</strong>,
+        then your account returns to Free. We do not provide automatic partial refunds for the
+        unused part of a billing period.
+      </li>
+      <li>
+        <strong>Downgrading.</strong> If you switch to a lower tier (or your subscription lapses
+        to Free), existing servers are kept, but creating new servers is blocked while you're over
+        your new plan's server cap (1 server on Free and Plus). On Free, the
+        100-requests-per-month cap applies starting from your next request.
+      </li>
+      <li>
+        <strong>Failed payments and chargebacks.</strong> If a payment fails, is reversed, or is
+        charged back, we may suspend or downgrade your paid access until the amount due is
+        settled. If you believe a charge is wrong, contact
+        <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a> first; we will normally resolve
+        it faster than a dispute with your bank.
+      </li>
+      <li>
+        <strong>14-day money-back guarantee.</strong> If you're not satisfied with your
+        <strong>first</strong> payment for a paid subscription, you may request a full refund
+        within <strong>14 days</strong> of that purchase by emailing
+        <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a>. This guarantee applies to a
+        first-time subscription purchase and does not apply to renewals.
+      </li>
+      <li>
+        <strong>Statutory rights unaffected.</strong> Nothing in this section limits any refund or
+        cancellation rights you may have under applicable law. Consumers in the EU, EEA, and UK
+        generally have a 14-day statutory right of withdrawal on digital purchases, in addition to
+        the guarantee above.
+      </li>
+      <li>
+        <strong>How refunds are issued.</strong> Refunds are processed by our payment provider
+        under its own refund policy and returned to the original payment method where possible.
+      </li>
+      <li>
+        <strong>Changes to payment providers.</strong> We may add, replace, or stop using a
+        payment provider. If a change requires you to re-authorize a subscription, we will notify
+        active paid users by email. A change of provider does not shorten a period you've already
+        paid for.
+      </li>
+    </ul>
+    <p>See <a href="/docs/how-to/billing/">Manage your subscription</a> for a walkthrough of the billing flows described above.</p>
+
+    <h2>7. Service Availability</h2>
+    <p>
+      The Service is provided on a best-effort basis. We do not currently offer a service level
+      agreement (SLA) or uptime guarantee. We may perform maintenance or service changes that
+      result in temporary downtime, with or without advance notice. We are not liable for loss or
+      damage resulting from service interruptions, including lost connections or failed MCP
+      requests.
+    </p>
+
+    <h2>8. Suspension and Termination</h2>
+    <ul>
+      <li>We may suspend or terminate your account if you violate these Terms, abuse the Service, or threaten its security or availability for other users.</li>
+      <li>We will make reasonable efforts to notify you before or at the time of suspension, except where immediate action is necessary for security reasons.</li>
+      <li>You may delete your account at any time by contacting <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a>.</li>
+      <li>Upon termination, your tunnel URLs stop functioning immediately and all MCP client access is revoked.</li>
+    </ul>
+
+    <h2>9. Data Processing</h2>
+    <p>
+      The tunnel relays MCP request and response bodies between your MCP client and your local
+      server in real time. This traffic is <strong>not persisted</strong> by the Service — it is
+      not written to disk, logged, or stored in a database. Your MCP servers, and the local
+      targets they expose, run and execute entirely on your own machine; we never run your code
+      for you. Connections between the CLI, the tunnel edge, and MCP clients use TLS encryption
+      (terminated at Cloudflare). No system is perfectly secure, and transmitting data over the
+      internet involves inherent risk.
+    </p>
+
+    <h2>10. Intellectual Property</h2>
+    <p>
+      The <code>mcpwarp</code> CLI is open source under the MIT License; see
+      <a href="https://github.com/mcpwarp/cli/blob/main/LICENSE">its repository</a>. The
+      dashboard, tunnel infrastructure, and the "MCP Warp" name and marks are proprietary and
+      belong to the operator.
+    </p>
+
+    <h2>11. Third-Party Services</h2>
+    <p>The Service integrates with or relies on third-party services including but not limited to:</p>
+    <ul>
+      <li>MCP client providers (for example Anthropic's Claude, OpenAI's ChatGPT) — these connect to your tunnel via OAuth. We facilitate the authentication flow but do not control how these providers process data once it reaches them.</li>
+      <li>Cloudflare, for network edge TLS termination and DDoS protection.</li>
+      <li>Our payment provider, merchant of record for payments — see "Payments, Refunds, and Cancellation" above.</li>
+    </ul>
+    <p>We are not responsible for the availability, terms, or policies of these third-party services.</p>
+
+    <h2>12. Disclaimer and Limitation of Liability</h2>
+    <p>
+      The Service is provided <strong>"as is"</strong> and <strong>"as available"</strong>,
+      without warranties of any kind, express or implied. We do not guarantee that the Service
+      will be uninterrupted, error-free, or available at any specific uptime level, or that MCP
+      clients will always be able to connect to your tunnel.
+    </p>
+    <p>
+      To the fullest extent permitted by law, we are not liable for indirect, incidental,
+      special, consequential, or punitive damages arising from your use of the Service, including
+      service interruptions, failed connections, or the behavior of third-party MCP clients or
+      the local servers you choose to expose.
+    </p>
+    <p>
+      Our total aggregate liability for any claim arising from the Service shall not exceed the
+      amount you paid us in the <strong>twelve (12) months</strong> preceding the claim.
+    </p>
+
+    <h2>13. Changes to Terms</h2>
+    <p>
+      We may update these Terms from time to time. Changes will be posted on this page with an
+      updated effective date. For material changes that significantly affect your rights or
+      obligations, we will make reasonable efforts to notify active paid users by email at least
+      <strong>14 days</strong> before the changes take effect. Continued use of the Service after
+      changes constitutes acceptance of the new Terms.
+    </p>
+
+    <h2>14. Governing Law</h2>
+    <p>
+      These Terms are governed by the laws of the State of Israel, without regard to its
+      conflict-of-law rules. Any dispute arising from these Terms or the Service that cannot be
+      resolved informally may be brought in the competent courts of Tel Aviv, Israel. If you are
+      a consumer, this does not limit any right you have under the law of your country of
+      residence to bring proceedings in, or benefit from the mandatory protections of, your local
+      courts and law.
+    </p>
+
+    <h2>15. Contact</h2>
+    <p>
+      For questions about these Terms, contact us at
+      <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a>. The Service is operated by
+      <a href="https://anatoly.dev">Anatoly Tarnavsky</a>, sole proprietor.
+    </p>
   </section>
 </Marketing>
 
 <style>
-  .placeholder {
-    max-width: 42rem;
+  .legal {
+    max-width: 72ch;
     margin: 0 auto;
-    padding: 1rem 1.5rem 3rem;
+    padding: 1rem 1.5rem 4rem;
     color: var(--sl-color-gray-3);
   }
-  .placeholder h1 {
+  .legal h1 {
     color: var(--sl-color-white);
     font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .effective-date {
+    color: var(--sl-color-gray-2);
+    margin-bottom: 1.5rem;
+  }
+  .legal h2 {
+    color: var(--sl-color-white);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.35rem;
+  }
+  .legal p,
+  .legal li {
+    line-height: 1.7;
+  }
+  .legal ul {
+    padding-left: 1.25rem;
+  }
+  .legal li {
+    margin-bottom: 0.5rem;
+  }
+  .legal a {
+    color: var(--sl-color-accent-high);
+  }
+  .legal a:hover {
+    text-decoration-thickness: 2px;
+  }
+  .legal code {
+    font-size: 0.9em;
+  }
+  .callout {
+    border: 1px solid var(--sl-color-gray-5);
+    background-color: var(--sl-color-gray-6);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0 2rem;
+  }
+  .callout p {
+    margin: 0 0 0.75rem;
+    color: var(--sl-color-gray-2);
+  }
+  .callout ul {
+    margin: 0;
   }
 </style>

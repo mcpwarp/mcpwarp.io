@@ -3,15 +3,15 @@ title: Limits and quotas
 description: Plan tiers, what counts as a request, when the counter resets, and what happens over quota.
 ---
 
-**Everyone is on Free during the private alpha: 100 requests/month, 1 server. Plus and Pro are planned but not purchasable yet.**
+**Three plans are available: Free (100 requests/month, 1 server), Plus ($5/month, unlimited requests), and Pro ($10/month, unlimited requests and servers).**
 
 ## Plans
 
 | Plan | Price | Requests | Servers |
 | --- | --- | --- | --- |
 | Free | $0 | 100/month | 1 |
-| Plus | $5/month (coming later) | Unlimited | 1 |
-| Pro | $10/month (coming later) | Unlimited | Unlimited (fair use) |
+| Plus | $5/month | Unlimited | 1 |
+| Pro | $10/month | Unlimited | Unlimited (fair use) |
 
 ## What counts as a request
 
@@ -35,10 +35,10 @@ The CLI surfaces this as:
 QUOTA_EXCEEDED ... Upgrade your plan at web.mcpwarp.io/settings
 ```
 
-Plus and Pro aren't purchasable yet — email [support@mcpwarp.io](mailto:support@mcpwarp.io) to request early access.
+Upgrade from Settings > Billing in the dashboard. See [Manage your subscription](/docs/how-to/billing/).
 
 ## Downgrading
 
-Downgrading below your current server count doesn't delete servers — it only blocks creating new ones until you're back within your plan's limit.
+Downgrading below your current server count doesn't delete servers — it only blocks creating new ones until you're back within your plan's limit. On Free, the 100-requests-per-month cap applies starting from your next request. See [Manage your subscription](/docs/how-to/billing/).
 
 See [Pricing](/pricing/) for plan details.

@@ -23,8 +23,6 @@ NAME     KIND   URL
 blender  stdio  https://blender-anatoly.tunnel.mcpwarp.io/mcp
 ```
 
-MCP Warp is currently in private alpha — email [support@mcpwarp.io](mailto:support@mcpwarp.io) to request access.
-
 That's it — the URL is what you paste into your MCP client.
 
 Head to [Get started](/docs/get-started/) for the full walkthrough, or [Pricing](/pricing/) for plan details.

@@ -1,23 +1,303 @@
 ---
 import Marketing from '../layouts/Marketing.astro';
+import PaymentProvider from '../components/PaymentProvider.astro';
+import { providers } from '../data/providers';
+import { paymentProvider } from '../data/paymentProvider';
 ---
 
 <Marketing title="Privacy" description="MCP Warp privacy policy.">
-  <section class="placeholder">
-    <h1>Privacy</h1>
-    <p>Coming soon.</p>
+  <section class="legal">
+    <h1>Privacy Policy</h1>
+    <p class="effective-date"><strong>Effective date:</strong> September 13, 2026</p>
+
+    <div class="callout">
+      <p><strong>The short version.</strong> This summary is for convenience only — the full policy below is what applies.</p>
+      <ul>
+        <li>mcpwarp.io sets no cookies and uses no third-party analytics.</li>
+        <li>The tunnel <strong>relays</strong> your MCP request and response bodies to your machine — it does not persist them.</li>
+        <li>The dashboard at web.mcpwarp.io sets one httpOnly session cookie to keep you signed in.</li>
+        <li>We collect account data (email, username, account identifier), your server's name, kind and status, monthly usage counters, subscription data from our payment provider, and personal access token hashes.</li>
+        <li>Card details never touch our servers — our payment provider handles checkout and payment as merchant of record.</li>
+        <li>Service logs are kept for 31 days, traces for 30 days, metrics for 7 days.</li>
+        <li>Email <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a> to access, export, or delete the data we hold about you.</li>
+      </ul>
+    </div>
+
+    <p>
+      This Privacy Policy describes how mcpwarp.io ("Website"), the <code>mcpwarp</code> CLI
+      ("Software"), and the MCP Warp dashboard and tunnel service (collectively, the "Service")
+      handle your information.
+    </p>
+
+    <h2>1. Information We Collect</h2>
+
+    <h3>Website</h3>
+    <p>
+      mcpwarp.io sets no cookies and uses no third-party analytics. Our hosting provider may
+      collect technical information such as IP addresses in server logs as part of operating the
+      infrastructure.
+    </p>
+
+    <h3>Dashboard Account</h3>
+    <p>When you create an account at web.mcpwarp.io, we collect:</p>
+    <ul>
+      <li><strong>Authentication data:</strong> your email address, your username, and the account identifier issued by our authentication service, managed through our self-hosted Keycloak identity provider.</li>
+      <li><strong>Cookies:</strong> web.mcpwarp.io sets one session cookie (<code>__Host-sid</code>, HttpOnly, Secure, SameSite=Strict, 30 days sliding) and a short-lived state cookie during sign-in. No analytics and no third-party scripts run on web.mcpwarp.io. No cookies are set on mcpwarp.io. Our payment provider's hosted checkout runs on its own domain under its own policy.</li>
+    </ul>
+
+    <h3>CLI</h3>
+    <p>
+      The <code>mcpwarp</code> CLI stores your login credentials locally (per-issuer, under
+      <code>~/.mcpwarp/credentials/</code>). Logging in and running <code>mcpwarp up</code> sends
+      your device-flow login and server registration requests to our backend, authenticated as
+      your account.
+    </p>
+
+    <h3>Tunnel Connection Data</h3>
+    <p>When you register a server and connect via <code>mcpwarp up</code>, we collect:</p>
+    <ul>
+      <li><strong>Server configuration:</strong> the server's name, its kind (stdio or HTTP), its status, and its public label <code>&lt;name&gt;-&lt;username&gt;</code>. We do not store the local command, path, port, or URL your server runs at — your CLI config never leaves your machine.</li>
+      <li><strong>Connection state:</strong> whether your <code>mcpwarp up</code> process is currently connected, for routing requests and for display on your dashboard.</li>
+    </ul>
+    <p>
+      The tunnel forwards standard proxy headers (such as <code>X-Forwarded-For</code>) to your
+      own MCP server, which runs on your machine; we never inject identity headers (email,
+      username) into requests it receives.
+    </p>
+    <p>
+      Cloudflare, our network edge provider, may process connection metadata, including IP
+      addresses, at the network edge under its own privacy policy.
+    </p>
+
+    <h3>Logging</h3>
+    <p>
+      The tunnel does not keep an access log of MCP requests; it logs the client's IP address
+      only on authentication failures. Our dashboard and API services keep standard HTTP access
+      logs that include your IP address and browser user agent — authorization headers, cookies,
+      and secrets are redacted from these logs. MCP request and response bodies are never logged
+      or stored; the tunnel holds a request in memory only for the duration of the relay.
+    </p>
+
+    <h3>MCP Client OAuth</h3>
+    <p>
+      When an MCP client (such as Claude, ChatGPT, or VS Code) connects to your tunnel URL, it
+      registers via OAuth 2.1 with dynamic client registration against our self-hosted Keycloak.
+      We store the client registration and a mapping between that client and your tunnel so
+      requests route correctly. We do not store OAuth access or refresh tokens issued to the
+      client — those are managed by Keycloak.
+    </p>
+    <p>
+      When you connect a client such as Claude or ChatGPT, you see a consent screen. The token
+      issued to that client carries your account identifier, username, name, and email address,
+      and is scoped to the single server you authorized.
+    </p>
+
+    <h3>Personal Access Tokens</h3>
+    <p>
+      Personal access tokens (<code>mcpwarp_pat_...</code>) are minted in the dashboard and shown
+      to you once. We store a hash of the token, its name, a display prefix and last four
+      characters, and creation, expiry, last-used, and revocation timestamps. The plaintext token
+      is shown once and never stored.
+    </p>
+
+    <h3>Subscription Data</h3>
+    <p>We store your current plan (Free, Plus, or Pro) and monthly usage counters, retained for billing records.</p>
+    <PaymentProvider context="privacy" />
+    <p>
+      We store the payment provider's customer and subscription identifiers, your plan, status,
+      and billing-period dates. Billing event notifications from our payment provider are stored
+      in full for 90 days for dispute resolution, then reduced to an envelope (event type, id,
+      status) that is retained with your account. Your card details, billing address, and other
+      checkout information are collected and processed by our payment provider on its own
+      checkout pages, under its own privacy policy, and never reach MCP Warp.
+    </p>
+
+    <h3>Service Monitoring</h3>
+    <p>
+      We use OpenTelemetry, self-hosted, to collect service health metrics and request traces
+      (request paths, status codes, timing data). This does not capture the content of your MCP
+      requests or responses.
+    </p>
+
+    <h2>2. Information We Do Not Collect</h2>
+    <ul>
+      <li>
+        The tunnel relays MCP request and response bodies between your MCP client and your local
+        machine in real time. This traffic is <strong>not stored, logged, or inspected</strong> by
+        the Service.
+      </li>
+      <li>Card and payment details never touch our servers — see "Subscription Data" above.</li>
+      <li>No third-party analytics trackers run on mcpwarp.io or the dashboard.</li>
+    </ul>
+
+    <h2>3. Third-Party Services</h2>
+    <p>We rely on the following third-party and self-hosted services:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Purpose</th>
+            <th>Privacy policy</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            providers.map((provider) => (
+              <tr>
+                <td>{provider.name}</td>
+                <td>{provider.purpose}</td>
+                <td>
+                  {provider.selfHosted ? (
+                    <>
+                      Self-hosted on MCP Warp-controlled infrastructure
+                      {provider.privacyUrl && (
+                        <>
+                          {' '}
+                          (software: <a href={provider.privacyUrl}>{provider.name}</a>)
+                        </>
+                      )}
+                    </>
+                  ) : provider.privacyUrl ? (
+                    <a href={provider.privacyUrl}>{provider.name} Privacy</a>
+                  ) : (
+                    'N/A'
+                  )}
+                </td>
+              </tr>
+            ))
+          }
+          {paymentProvider && (
+            <tr>
+              <td>{paymentProvider.name}</td>
+              <td>Merchant of record: payment processing and checkout (since {paymentProvider.since})</td>
+              <td>
+                <a href={paymentProvider.privacyUrl}>{paymentProvider.name} Privacy</a>
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+    <p>
+      PostgreSQL, NATS, Keycloak and OpenTelemetry run on infrastructure controlled by MCP Warp;
+      no third party has access to the data they hold.
+    </p>
+
+    <h2>4. Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+      <li><strong>Access your data</strong> — view your account information, server configuration, and subscription status through the dashboard.</li>
+      <li><strong>Manage your data yourself</strong> — you can delete servers and revoke personal access tokens yourself in the dashboard at any time.</li>
+      <li><strong>Access, export, or delete your account data</strong> — email <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a>. We handle these requests manually and confirm by email. We retain records we must keep for tax or accounting purposes.</li>
+      <li><strong>Cancel your subscription</strong> — downgrade from a paid plan to Free at any time through the billing portal (Settings &gt; Billing &gt; Manage billing).</li>
+    </ul>
+
+    <h2>5. Data Retention</h2>
+    <ul>
+      <li><strong>Account data</strong> (email, username, account identifier) is retained for the lifetime of your account and deleted upon account deletion.</li>
+      <li><strong>Server configuration</strong> is retained while your account is active and deleted when you remove a server or delete your account.</li>
+      <li><strong>Service logs</strong> are retained for up to <strong>31 days</strong> and then automatically purged.</li>
+      <li><strong>Request traces</strong> are retained for up to <strong>30 days</strong>.</li>
+      <li><strong>Performance metrics</strong> are retained for up to <strong>7 days</strong>.</li>
+      <li><strong>Monthly usage counters and plan-change history</strong> are retained as billing records for the lifetime of your account, except records we are legally required to retain for longer (for example for tax or accounting purposes).</li>
+      <li><strong>Billing event notifications from our payment provider</strong> are retained in full for 90 days, then reduced to an envelope (event type, id, status) retained with your account.</li>
+      <li><strong>Personal access token hashes</strong> are retained until you revoke the token or delete your account.</li>
+      <li><strong>Dashboard sessions</strong> are retained for up to <strong>30 days</strong>.</li>
+      <li><strong>Tunnel request and response bodies</strong> are never persisted — they exist only in transit.</li>
+    </ul>
+
+    <h2>6. Children's Privacy</h2>
+    <p>The Service is not directed at children under 13. We do not knowingly collect personal information from children.</p>
+
+    <h2>7. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date.</p>
+
+    <h2>8. Contact</h2>
+    <p>For privacy-related questions or requests, contact us at <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a>.</p>
   </section>
 </Marketing>
 
 <style>
-  .placeholder {
-    max-width: 42rem;
+  .legal {
+    max-width: 72ch;
     margin: 0 auto;
-    padding: 1rem 1.5rem 3rem;
+    padding: 1rem 1.5rem 4rem;
     color: var(--sl-color-gray-3);
   }
-  .placeholder h1 {
+  .legal h1 {
     color: var(--sl-color-white);
     font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .effective-date {
+    color: var(--sl-color-gray-2);
+    margin-bottom: 1.5rem;
+  }
+  .legal h2 {
+    color: var(--sl-color-white);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.35rem;
+  }
+  .legal h3 {
+    color: var(--sl-color-white);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+  .legal p,
+  .legal li {
+    line-height: 1.7;
+  }
+  .legal ul {
+    padding-left: 1.25rem;
+  }
+  .legal li {
+    margin-bottom: 0.5rem;
+  }
+  .legal a {
+    color: var(--sl-color-accent-high);
+  }
+  .legal a:hover {
+    text-decoration-thickness: 2px;
+  }
+  .legal code {
+    font-size: 0.9em;
+  }
+  .callout {
+    border: 1px solid var(--sl-color-gray-5);
+    background-color: var(--sl-color-gray-6);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0 2rem;
+  }
+  .callout p {
+    margin: 0 0 0.75rem;
+    color: var(--sl-color-gray-2);
+  }
+  .callout ul {
+    margin: 0;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    color: var(--sl-color-gray-2);
+  }
+  th {
+    color: var(--sl-color-white);
+    font-weight: 600;
+    white-space: nowrap;
   }
 </style>

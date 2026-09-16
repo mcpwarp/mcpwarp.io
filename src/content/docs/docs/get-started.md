@@ -5,7 +5,7 @@ description: Install mcpwarp, log in, and expose your first MCP server in about 
 
 **This page takes you from nothing installed to a public URL for a local MCP server, in about five minutes.**
 
-MCP Warp is currently in private alpha. Sign-up is closed — email [support@mcpwarp.io](mailto:support@mcpwarp.io) to request access.
+Sign in at [https://web.mcpwarp.io](https://web.mcpwarp.io) to create your account and choose a username; the CLI login uses the same account.
 
 ## Install
 

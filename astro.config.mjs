@@ -60,6 +60,7 @@ export default defineConfig({
             { label: 'Connect Claude', link: '/docs/how-to/connect-claude/' },
             { label: 'Connect ChatGPT', link: '/docs/how-to/connect-chatgpt/' },
             { label: 'Connect other clients', link: '/docs/how-to/connect-other-clients/' },
+            { label: 'Manage your subscription', link: '/docs/how-to/billing/' },
             { label: 'Troubleshooting', link: '/docs/how-to/troubleshooting/' },
           ],
         },
