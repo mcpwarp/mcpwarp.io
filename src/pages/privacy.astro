@@ -18,7 +18,7 @@ import { paymentProvider } from '../data/paymentProvider';
         <li>The dashboard at web.mcpwarp.io sets one httpOnly session cookie to keep you signed in.</li>
         <li>We collect account data (email, username, account identifier), your server's name, kind and status, monthly usage counters, subscription data from our payment provider, and personal access token hashes.</li>
         <li>Card details never touch our servers — our payment provider handles checkout and payment as merchant of record.</li>
-        <li>Service logs are kept for 31 days, traces for 30 days, metrics for 7 days.</li>
+        <li>Service logs, request traces and performance metrics are kept for 14 days.</li>
         <li>Email <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a> to access, export, or delete the data we hold about you.</li>
       </ul>
     </div>
@@ -101,16 +101,21 @@ import { paymentProvider } from '../data/paymentProvider';
     </p>
 
     <h3>Subscription Data</h3>
-    <p>We store your current plan (Free, Plus, or Pro) and monthly usage counters, retained for billing records.</p>
-    <PaymentProvider context="privacy" />
+    <ul>
+      <li><strong>Subscription tier:</strong> your current plan (Free, Plus, or Pro).</li>
+      <li><strong>Tier history:</strong> an audit trail of plan changes with timestamps.</li>
+      <li><strong>Expiration date:</strong> when your current subscription period ends (for paid plans).</li>
+    </ul>
     <p>
-      We store the payment provider's customer and subscription identifiers, your plan, status,
-      and billing-period dates. Billing event notifications from our payment provider are stored
-      in full for 90 days for dispute resolution, then reduced to an envelope (event type, id,
-      status) that is retained with your account. Your card details, billing address, and other
-      checkout information are collected and processed by our payment provider on its own
-      checkout pages, under its own privacy policy, and never reach MCP Warp.
+      Payments for paid plans are handled by our third-party payment provider; see the
+      <a href="/terms/#payments-refunds-and-cancellation">Terms of Service (Payments section)</a>.
+      Your payment details (card number, billing address, and related checkout information,
+      which may include your IP address collected for tax-location and fraud-prevention
+      purposes) are collected and processed by the payment provider on its own checkout pages
+      under its own privacy policy. Card numbers never reach our servers and we do not store
+      them.
     </p>
+    <PaymentProvider context="privacy" />
 
     <h3>Service Monitoring</h3>
     <p>
@@ -197,11 +202,8 @@ import { paymentProvider } from '../data/paymentProvider';
     <ul>
       <li><strong>Account data</strong> (email, username, account identifier) is retained for the lifetime of your account and deleted upon account deletion.</li>
       <li><strong>Server configuration</strong> is retained while your account is active and deleted when you remove a server or delete your account.</li>
-      <li><strong>Service logs</strong> are retained for up to <strong>31 days</strong> and then automatically purged.</li>
-      <li><strong>Request traces</strong> are retained for up to <strong>30 days</strong>.</li>
-      <li><strong>Performance metrics</strong> are retained for up to <strong>7 days</strong>.</li>
-      <li><strong>Monthly usage counters and plan-change history</strong> are retained as billing records for the lifetime of your account, except records we are legally required to retain for longer (for example for tax or accounting purposes).</li>
-      <li><strong>Billing event notifications from our payment provider</strong> are retained in full for 90 days, then reduced to an envelope (event type, id, status) retained with your account.</li>
+      <li><strong>Service logs, request traces and performance metrics</strong> are retained for up to <strong>14 days</strong> and then automatically purged.</li>
+      <li><strong>Monthly usage counters and tier history</strong> are retained as billing records for the lifetime of your account, except records we are legally required to retain for longer (for example for tax or accounting purposes).</li>
       <li><strong>Personal access token hashes</strong> are retained until you revoke the token or delete your account.</li>
       <li><strong>Dashboard sessions</strong> are retained for up to <strong>30 days</strong>.</li>
       <li><strong>Tunnel request and response bodies</strong> are never persisted — they exist only in transit.</li>
