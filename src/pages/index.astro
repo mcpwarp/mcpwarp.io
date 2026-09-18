@@ -8,6 +8,7 @@ const steps = [
     n: '1',
     label: 'Install',
     code: `brew tap mcpwarp/tap
+brew trust --tap mcpwarp/tap
 brew install --cask mcpwarp`,
   },
   {
@@ -63,8 +64,8 @@ const features = [
       <div class="hero-copy">
         <h1>Give your local MCP servers a public, OAuth-protected URL</h1>
         <p class="subtitle">
-          Like ngrok, but built for MCP. One command, and Claude, ChatGPT, VS Code and any
-          Streamable HTTP MCP client can reach the MCP servers on your machine.
+          Like ngrok, but built for MCP. One command, and Claude, ChatGPT and any Streamable HTTP
+          MCP client can securely reach the MCP servers on your machine.
         </p>
         <div class="cta-row">
           <a class="cta cta-primary" href="/docs/get-started/">Get started</a>
@@ -90,6 +91,7 @@ const features = [
         ))
       }
     </div>
+    <p class="steps-note">Windows and Linux packages: see <a href="/docs/get-started/#install">the install guide</a>.</p>
     <!-- SCREENSHOT: tui-up — mcpwarp up TUI with two servers, one stdio one http, both active, log pane open -->
   </section>
 
@@ -237,6 +239,11 @@ const features = [
     margin: 0;
     font-size: 0.85rem;
     overflow-x: auto;
+  }
+  .steps-note {
+    margin: 1rem 0 0;
+    font-size: 1.05rem;
+    color: var(--sl-color-gray-2);
   }
 
   .features {

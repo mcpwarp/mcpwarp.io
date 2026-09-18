@@ -22,4 +22,11 @@ export type PaymentProvider = {
   since: string;
 };
 
-export const paymentProvider: PaymentProvider | null = null;
+export const paymentProvider: PaymentProvider | null = {
+  name: 'Polar Software, Inc.',
+  shortName: 'Polar',
+  url: 'https://polar.sh',
+  buyerTermsUrl: 'https://polar.sh/legal/checkout-buyer-terms',
+  privacyUrl: 'https://polar.sh/legal/privacy-policy',
+  since: 'September 2026',
+};
