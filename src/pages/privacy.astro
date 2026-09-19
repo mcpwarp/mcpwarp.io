@@ -18,7 +18,7 @@ import { paymentProvider } from '../data/paymentProvider';
         <li>The dashboard at web.mcpwarp.io sets one httpOnly session cookie to keep you signed in.</li>
         <li>We collect account data (email, username, account identifier), your server's name, kind and status, monthly usage counters, subscription data from our payment provider, and personal access token hashes.</li>
         <li>Card details never touch our servers — our payment provider handles checkout and payment as merchant of record.</li>
-        <li>Service logs, request traces and performance metrics are kept for 14 days.</li>
+        <li>Service logs and request traces are kept for 14 days. Performance metrics are aggregate, contain no personal data, and are deleted within 45 days.</li>
         <li>Email <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a> to access, export, or delete the data we hold about you.</li>
       </ul>
     </div>
@@ -121,7 +121,8 @@ import { paymentProvider } from '../data/paymentProvider';
     <p>
       We use OpenTelemetry, self-hosted, to collect service health metrics and request traces
       (request paths, status codes, timing data). This does not capture the content of your MCP
-      requests or responses.
+      requests or responses. Performance metrics are aggregate counters and carry no per-user,
+      per-server or per-IP labels.
     </p>
 
     <h2>2. Information We Do Not Collect</h2>
@@ -202,7 +203,8 @@ import { paymentProvider } from '../data/paymentProvider';
     <ul>
       <li><strong>Account data</strong> (email, username, account identifier) is retained for the lifetime of your account and deleted upon account deletion.</li>
       <li><strong>Server configuration</strong> is retained while your account is active and deleted when you remove a server or delete your account.</li>
-      <li><strong>Service logs, request traces and performance metrics</strong> are retained for up to <strong>14 days</strong> and then automatically purged.</li>
+      <li><strong>Service logs and request traces</strong> are retained for up to <strong>14 days</strong> and then automatically purged.</li>
+      <li><strong>Performance metrics</strong> are aggregate counters that carry no user, server or IP identifiers. They are retained for 14 days and deleted in monthly batches, no later than <strong>45 days</strong> after collection.</li>
       <li><strong>Monthly usage counters and tier history</strong> are retained as billing records for the lifetime of your account, except records we are legally required to retain for longer (for example for tax or accounting purposes).</li>
       <li><strong>Personal access token hashes</strong> are retained until you revoke the token or delete your account.</li>
       <li><strong>Dashboard sessions</strong> are retained for up to <strong>30 days</strong>.</li>
