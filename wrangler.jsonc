@@ -19,15 +19,14 @@
 	"workers_dev": false,
 	"preview_urls": false,
 
-	// Uncommenting and pushing is the cutover itself: wrangler attaches the
-	// Custom Domain and overrides the existing apex records (README →
-	// Deployment → Cutover, step 3).
+	// Live on the mcpwarp.io custom domain (cut over from GitHub Pages on
+	// 2026-10-08; README → Deployment → Cutover).
 	//
 	// Do NOT add www.mcpwarp.io here — Custom Domains require an exact
 	// hostname match, so www is handled separately (a proxied placeholder
 	// DNS record + a zone Single Redirect rule), not a second route on this
 	// Worker. See https://developers.cloudflare.com/workers/configuration/routing/custom-domains/#redirect-between-www-and-root-domain
-	// "routes": [
-	// 	{ "pattern": "mcpwarp.io", "custom_domain": true }
-	// ]
+	"routes": [
+		{ "pattern": "mcpwarp.io", "custom_domain": true }
+	]
 }
