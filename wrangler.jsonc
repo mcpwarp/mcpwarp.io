@@ -1,0 +1,33 @@
+{
+	"name": "mcpwarp-io",
+	"compatibility_date": "2026-08-28",
+
+	// Pure static site — no Worker script. Requests are served directly
+	// from ./dist (the Astro build output) with no "main" entry.
+	"assets": {
+		"directory": "./dist",
+		"not_found_handling": "404-page"
+		// html_handling defaults to "auto-trailing-slash", which matches Astro's
+		// output: with the default trailingSlash: "ignore" and build.format:
+		// "directory", every page is emitted as dir/index.html and served with
+		// a trailing slash, which is how all internal links are written — no
+		// change needed here.
+	},
+
+	// Served only on the mcpwarp.io custom domain (see below) — the
+	// *.workers.dev URL and preview URLs are disabled.
+	"workers_dev": false,
+	"preview_urls": false,
+
+	// Uncommenting and pushing is the cutover itself: wrangler attaches the
+	// Custom Domain and overrides the existing apex records (README →
+	// Deployment → Cutover, step 3).
+	//
+	// Do NOT add www.mcpwarp.io here — Custom Domains require an exact
+	// hostname match, so www is handled separately (a proxied placeholder
+	// DNS record + a zone Single Redirect rule), not a second route on this
+	// Worker. See https://developers.cloudflare.com/workers/configuration/routing/custom-domains/#redirect-between-www-and-root-domain
+	// "routes": [
+	// 	{ "pattern": "mcpwarp.io", "custom_domain": true }
+	// ]
+}
