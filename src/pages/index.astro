@@ -1,0 +1,57 @@
+---
+// Placeholder for main; conflicts with astro-site's index.astro on merge — take astro-site's version.
+import { Image } from 'astro:assets';
+import hero from '../assets/hero.png';
+
+const title = 'MCP Warp - Coming Soon!';
+const description =
+  'Tunnel your local MCP servers to the cloud. Like ngrok, but built for MCP — with OAuth and more.';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <header>{title}</header>
+    <main>
+      <Image src={hero} alt="MCP Warp — tunnel local MCP servers to the cloud" loading="eager" />
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(html) {
+    color-scheme: dark;
+  }
+  :global(body) {
+    margin: 0;
+    background: #0f0f0f;
+    color: #e5e5e5;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  header {
+    padding: 1rem 1.5rem;
+    font-weight: 700;
+    border-bottom: 1px solid #262626;
+  }
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    padding: 2rem;
+  }
+  img {
+    max-width: 100%;
+    max-height: 80vh;
+    height: auto;
+    width: auto;
+    border-radius: 12px;
+  }
+</style>
