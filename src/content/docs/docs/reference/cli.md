@@ -29,9 +29,9 @@ Validates your config and shows what mcpwarp sees, without starting the tunnel.
 
 ### `mcpwarp up`
 
-Connects, registers every configured server, prints a table of names, kinds, and public URLs, and stays in the foreground until you press Ctrl+C. Re-registers automatically after a reconnect.
+Connects, registers every configured server, prints a table of names, kinds, and public URLs, and stays in the foreground until you press Ctrl+C. Re-registers automatically after a reconnect. If the auth server can't be reached when the session token needs a refresh, it keeps retrying with backoff instead of exiting — see [Troubleshooting](/docs/how-to/troubleshooting/).
 
-You can run `mcpwarp up` on several machines under one account as long as each machine uses different server names. Run a given server name from one machine at a time: registering the same name from two machines is unsupported and the result is undefined.
+You can run `mcpwarp up` on several machines under one account as long as each machine uses different server names. Run a given server name from one machine at a time: registering the same name from two machines is unsupported and the result is undefined. At most 10 `mcpwarp up` agents can be connected at once per account — see [Limits and quotas](/docs/reference/limits-and-quotas/).
 
 ```
 NAME     KIND   URL

@@ -12,7 +12,7 @@ export interface Provider {
 export const providers: Provider[] = [
   {
     name: 'Cloudflare',
-    purpose: 'Network edge: TLS termination and DDoS protection',
+    purpose: 'Network edge: TLS termination and DDoS protection; R2 storage for database backups',
     selfHosted: false,
     privacyUrl: 'https://www.cloudflare.com/privacypolicy/',
   },
@@ -43,6 +43,12 @@ export const providers: Provider[] = [
   {
     name: 'OpenTelemetry',
     purpose: 'Service health monitoring',
+    selfHosted: true,
+    privacyUrl: null,
+  },
+  {
+    name: 'Traffic monitoring',
+    purpose: 'Fair use and abuse detection on tunnel traffic',
     selfHosted: true,
     privacyUrl: null,
   },

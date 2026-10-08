@@ -13,6 +13,17 @@ description: Plan tiers, what counts as a request, when the counter resets, and 
 | Plus | $5/month | Unlimited | 1 |
 | Pro | $10/month | Unlimited | Unlimited (fair use) |
 
+Usage on every plan is monitored for fair use and abuse. See [Fair Use and Abuse Monitoring](/terms/#fair-use-and-abuse-monitoring) in the Terms.
+
+## Other limits
+
+These apply to every plan, Free through Pro.
+
+| Limit | Cap | What happens over it |
+| --- | --- | --- |
+| Concurrent `mcpwarp up` agents | 10 per account | The 11th connection is refused with `CONNECTION_LIMIT: too many agent connections for this account (limit 10)`. The CLI doesn't exit — it retries every 0-30 seconds and reconnects as soon as another agent closes. |
+| Servers per config | 100 per config | Registering more than 100 gets `TOO_MANY_SERVICES` back and the whole batch is rejected; none of those servers register, and the connection stays open. This is per config, not an account-wide total. |
+
 ## What counts as a request
 
 One HTTP request an MCP client makes to your public URL counts as one request against your quota.
