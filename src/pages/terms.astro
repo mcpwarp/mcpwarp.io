@@ -14,7 +14,7 @@ import PaymentProvider from '../components/PaymentProvider.astro';
         <li>MCP Warp gives your local MCP servers a public, OAuth-protected URL. You're responsible for what your servers expose and for the account you keep it under.</li>
         <li>There's a <strong>Free</strong> plan (100 requests/month, 1 server) and paid <strong>Plus</strong> ($5/month) and <strong>Pro</strong> ($10/month) plans. Usage resets at the start of every UTC month.</li>
         <li>Paid plans are billed through our payment provider, which acts as merchant of record. Cancel anytime from Settings &gt; Billing via the billing portal, or by emailing <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a> — access continues until the end of the period you've paid for. There's a <strong>14-day money-back guarantee</strong> on your first payment.</li>
-        <li>The tunnel relays your MCP traffic. We analyze traffic automatically to detect abuse; beyond a short-lived processing queue, request and response bodies are stored, and can be viewed by a person, only for accounts flagged for abuse review.</li>
+        <li>The tunnel relays your MCP traffic. Automated monitoring inspects it to detect abuse and illegal activity; beyond a short-lived processing queue, request and response bodies are stored, and can be viewed by a person, only for accounts flagged for review.</li>
         <li>The Service is provided <strong>"as is"</strong>, best-effort, with no uptime guarantee.</li>
         <li>Our liability is limited: at most, what you paid us in the last 12 months.</li>
       </ul>
@@ -67,7 +67,7 @@ import PaymentProvider from '../components/PaymentProvider.astro';
         Take responsibility for what your MCP servers expose. You choose which local servers to
         register and which MCP clients to authorize — we do not vouch for the content or behavior
         of either. Our systems analyze all tunnel traffic automatically to detect abuse, and a
-        person may view the traffic of accounts flagged for abuse review, as described in "Fair
+        person may view the traffic of accounts flagged for review, as described in "Fair
         Use and Abuse Monitoring" below and in the <a href="/privacy/#traffic-monitoring">Privacy Policy</a>.
       </li>
       <li>
@@ -84,16 +84,16 @@ import PaymentProvider from '../components/PaymentProvider.astro';
     </p>
     <ul>
       <li>Using the tunnel as a generic relay or proxy for traffic that isn't MCP, such as file transfer, general web proxying, or data tunneled inside MCP messages.</li>
+      <li>Using the Service for illegal activity.</li>
       <li>Using the Service in a way that overloads it or degrades it for other users.</li>
       <li>Going beyond fair use of the Pro plan's unlimited-server allowance.</li>
     </ul>
     <p>
-      We monitor tunnel traffic to detect abuse: our systems analyze every request and reply
-      automatically and keep per-account measurements. Automated rules flag accounts whose usage
-      crosses set thresholds, and our administrators can also flag an account by hand. A flagged
-      account is reviewed by a person. A flag by itself does not suspend your account or block
-      your traffic. While an account is flagged, we may store its request and reply bodies and a
-      person may view them to investigate.
+      We use automated monitoring to detect abuse, illegal activity, and use beyond fair use. It
+      may flag an account for review by a person, and our administrators can also flag an
+      account by hand. A flag by itself does not suspend your account or block your traffic.
+      While an account is flagged, we may store its request and reply bodies and a person may
+      view them to investigate.
     </p>
     <p>
       If the review finds abuse, we may suspend or terminate the account under "Suspension and
@@ -197,11 +197,10 @@ import PaymentProvider from '../components/PaymentProvider.astro';
     <h2>10. Data Processing</h2>
     <p>
       The tunnel relays MCP request and response bodies between your MCP client and your local
-      server in real time. For abuse monitoring, a copy of this traffic passes through an
-      internal queue, where it is analyzed automatically and deleted within about 6 hours; we keep
-      only per-account measurements, and store content longer only for accounts flagged for abuse
-      review — see "Fair Use and Abuse Monitoring" above and the
-      <a href="/privacy/#traffic-monitoring">Privacy Policy</a>. Your MCP servers, and the local
+      server in real time. Our automated monitoring inspects this traffic to detect abuse; it
+      keeps the calling client's IP address and request metadata, and keeps content beyond a
+      short-lived processing queue only for accounts flagged for review. See "Fair Use and
+      Abuse Monitoring" above and the <a href="/privacy/#traffic-monitoring">Privacy Policy</a>. Your MCP servers, and the local
       targets they expose, run and execute entirely on your own machine; we never run your code
       for you. Connections between the CLI, the tunnel edge, and MCP clients use TLS encryption
       (terminated at Cloudflare). No system is perfectly secure, and transmitting data over the
@@ -222,6 +221,7 @@ import PaymentProvider from '../components/PaymentProvider.astro';
       <li>MCP client providers (for example Anthropic's Claude, OpenAI's ChatGPT) — these connect to your tunnel via OAuth. We facilitate the authentication flow but do not control how these providers process data once it reaches them.</li>
       <li>Cloudflare, for network edge TLS termination and DDoS protection.</li>
       <li>Our payment provider, merchant of record for payments — see "Payments, Refunds, and Cancellation" above.</li>
+      <li>Brevo, for transactional email, such as emails about changes to your plan.</li>
     </ul>
     <p>We are not responsible for the availability, terms, or policies of these third-party services.</p>
 

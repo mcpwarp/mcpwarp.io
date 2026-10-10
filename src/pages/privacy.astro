@@ -14,11 +14,11 @@ import { paymentProvider } from '../data/paymentProvider';
       <p><strong>The short version.</strong> This summary is for convenience only — the full policy below is what applies.</p>
       <ul>
         <li>mcpwarp.io sets no cookies and uses no third-party analytics.</li>
-        <li>The tunnel <strong>relays</strong> your MCP request and response bodies to your machine. To detect abuse, our systems automatically analyze every request and reply and keep per-account counters, not the content. Beyond a short-lived processing queue, bodies are stored, and can be viewed by a person, only if your account is flagged for abuse review — see "Traffic Monitoring" below.</li>
+        <li>The tunnel <strong>relays</strong> your MCP request and response bodies to your machine. An automated monitoring service inspects this traffic to detect abuse and illegal activity, and keeps the calling client's IP address and request metadata. Beyond a short-lived processing queue, message content is stored, and can be viewed by a person, only if your account is flagged for review. See "Traffic Monitoring" below.</li>
         <li>The dashboard at web.mcpwarp.io sets one httpOnly session cookie to keep you signed in.</li>
         <li>We collect account data (email, username, account identifier), your server's name, kind and status, monthly usage counters, subscription data from our payment provider, and personal access token hashes.</li>
         <li>Card details never touch our servers — our payment provider handles checkout and payment as merchant of record.</li>
-        <li>Service logs and request traces are kept for 14 days. Performance metrics are aggregate, contain no personal data, and are deleted within 45 days. Traffic monitoring data has its own retention, listed in "Data Retention" below.</li>
+        <li>Service logs and request traces are kept for 14 days. Performance metrics are aggregate, contain no personal data, and are deleted within 45 days. Traffic monitoring data has its own retention, listed in "Traffic Monitoring" below.</li>
         <li>Email <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a> to access, export, or delete the data we hold about you.</li>
       </ul>
     </div>
@@ -71,12 +71,14 @@ import { paymentProvider } from '../data/paymentProvider';
 
     <h3>Logging</h3>
     <p>
-      Apart from the traffic monitoring described below, the tunnel does not keep an access log
-      of MCP requests; it logs the client's IP address only on authentication failures. Our
+      The tunnel does not keep a general access log of MCP requests. The traffic monitoring
+      service described below records the client's IP address and request metadata for every
+      request to your public MCP URL that the tunnel accepts. Separately, the tunnel's service
+      logs record a connection's IP address when it fails authentication. Our
       dashboard and API services keep standard HTTP access logs that include your IP address and
       browser user agent — authorization headers, cookies, and secrets are redacted from these
       logs. MCP request and response bodies are not logged. They pass briefly through the
-      traffic monitoring queue and are kept longer only for accounts flagged for abuse review
+      traffic monitoring queue and are kept longer only for accounts flagged for review
       (see "Traffic Monitoring" below).
     </p>
 
@@ -130,70 +132,68 @@ import { paymentProvider } from '../data/paymentProvider';
 
     <h3 id="traffic-monitoring">Traffic Monitoring (Fair Use and Abuse Detection)</h3>
     <p>
-      We run a self-hosted traffic monitoring service to detect abuse of the tunnel (for example,
-      using it as a generic relay or proxy for traffic that isn't MCP), to detect use beyond fair
-      use, and to protect the Service. It only measures and flags; it never blocks traffic or
-      changes your account. It applies to every account.
+      We run an automated monitoring service that inspects traffic passing through the tunnel
+      and may keep selected data from it, to detect and investigate abuse, illegal activity, and
+      misuse of the Service. It applies to every account. It can flag an account for review, but
+      it never blocks traffic or changes your account by itself.
     </p>
+    <p><strong>What it keeps.</strong></p>
+    <ul>
+      <li><strong>Client IP address and request metadata, for all traffic.</strong> For each request to your public MCP URL that the tunnel accepts, the service records the IP address of the client making the request and metadata such as the time, the MCP method and tool name, the response status, message sizes, the client's user agent, and which of your servers was called. It keeps this as per-account counters and a record of which client IP addresses were seen. The IP address of your own machine, where your MCP server runs, is not sent to the monitoring service.</li>
+      <li><strong>Message content, only for accounts flagged for review.</strong> Request and reply bodies of all traffic pass through a short-lived processing queue, written to disk on our infrastructure, so they can be analyzed automatically; each is deleted once processed. While an account is flagged, the service also keeps a record of each message and a capped amount of its request and reply bodies. Bodies contain whatever your MCP client and your server exchanged, which may include personal data.</li>
+      <li><strong>Flag records.</strong> Details such as the rule or reason for each flag and unflag, when it happened, and who made it.</li>
+    </ul>
     <p>
-      <strong>Automated analysis, for all traffic.</strong> The tunnel sends a copy of every MCP
-      request and reply that passes through your tunnel URL, body included (up to about 1 MiB),
-      to the monitoring service through an internal message queue. The queue is written to disk
-      on our infrastructure; each message is deleted once the service has processed it, and in
-      any case within about 6 hours. The service analyzes each message automatically: it reads
-      the time, the direction (request or reply), the JSON-RPC method and tool name, the HTTP
-      status, the MCP protocol version, the body size, the client's user agent, the client's IP
-      address (as reported by Cloudflare) and the identifier of the server the request went to,
-      checks that the body is well-formed MCP, and measures how much of it is base64 or otherwise
-      unpredictable data. For accounts that are not flagged, it stores only the results:
-      per-account counters and size statistics per minute and per hour, and a record of which
-      client IP addresses were seen on which day. It does not store the content or per-message
-      details of your requests and replies, and no person looks at them.
+      <strong>Flagging.</strong> Automated rules look for unusual patterns, such as unusual
+      request or data volume, many unanswered requests, or traffic from many different client
+      networks. Our administrators can also flag or unflag an account by hand. A flag marks the
+      account for human review and notifies our administrators; it does not suspend the account
+      or block its traffic. Any suspension is a separate decision under the
+      <a href="/terms/#fair-use-and-abuse-monitoring">Terms of Service</a>. Capture of message
+      content stops when the account is unflagged.
     </p>
+    <p><strong>How long.</strong></p>
+    <ul>
+      <li>Bodies in the processing queue: deleted once processed, and in any case within about <strong>6 hours</strong>.</li>
+      <li>Per-minute counters: about <strong>14 days</strong>, then rolled up into hourly counters, which currently have no automatic expiry.</li>
+      <li>Client IP records: about <strong>45 days</strong>.</li>
+      <li>Message records and stored bodies (flagged accounts only): until an administrator deletes them. When an account reaches its storage cap, the oldest bodies are deleted first.</li>
+      <li>Flag and audit records: no automatic expiry in the monitoring service; the copy in our account database is kept until your account is deleted. Flag notifications on our internal message queue are kept for about <strong>7 days</strong>.</li>
+      <li>Backups of the monitoring database, including any stored bodies: about <strong>7 days</strong> in Cloudflare R2.</li>
+      <li>Flag notification emails: kept in our administrators' mailbox until deleted. Brevo keeps delivery logs under its own policy.</li>
+    </ul>
+    <p><strong>Who sees it.</strong></p>
+    <ul>
+      <li>The automated monitoring system, for all traffic.</li>
+      <li>Our administrators, to investigate abuse: counters and client IP records for any account, and message content only for accounts flagged for review.</li>
+      <li>Brevo, our email provider, which delivers the flag notification to our administrators. That email contains your email address, username, and account identifier.</li>
+      <li>Cloudflare R2, which stores database backups.</li>
+    </ul>
     <p>
-      <strong>Flagging.</strong> Automatic rules flag an account when, within a time window, it
-      exceeds a request count, a data volume, a share of requests left unanswered, or a number of
-      distinct client IP addresses. Our administrators can also flag or unflag an account by
-      hand, with a reason. A flag marks the account for human review; it does not suspend the
-      account or block its traffic by itself. Any suspension is a separate decision under the
-      <a href="/terms/#fair-use-and-abuse-monitoring">Terms of Service</a>. Both the monitoring
-      service and our account database keep a record of each flag (the rule or reason, the
-      measured value, the time, and who flagged or unflagged it), and the monitoring service keeps
-      an audit record of each manual flag and unflag.
-    </p>
-    <p>
-      <strong>Stored content, only for flagged accounts.</strong> While an account is flagged,
-      the service also stores a record of each message (the per-message details listed above,
-      plus which protocol checks it failed) and the request and reply bodies themselves. Each body is stored up to its first
-      64 KiB, and at most about 2,000 bodies or 200 MiB are kept per account; when either limit is
-      reached, the oldest bodies are deleted first. Bodies contain whatever your MCP client and
-      your server exchanged, which may include personal data. Only our administrators can view
-      them, and only to investigate abuse. Capture stops when the account is unflagged; what was
-      already stored stays until an administrator deletes it.
+      The monitoring service, its queue, and its database run on infrastructure controlled by
+      MCP Warp, like the rest of the Service.
     </p>
     <p>
       <strong>Legal basis.</strong> We process this data on the basis of our legitimate interest
       in preventing abuse and keeping the Service available and secure for everyone using it.
     </p>
     <p>
-      <strong>Where it stays.</strong> The monitoring service, its queue and its database run on
-      infrastructure controlled by MCP Warp, like the rest of the Service. Like our other
-      databases, the monitoring database, including any stored bodies, is backed up to Cloudflare
-      R2 storage (see "Third-Party Services" below). There is no self-service view of this data;
-      to ask what we hold about your account, or to request its deletion, email
-      <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a>.
-      Limits, windows and retention periods are configuration and may change; the retention
-      periods currently in effect are listed in "Data Retention" below.
+      <strong>Your choices.</strong> There is no self-service view of this data. To ask what we
+      hold about your account, or to request its deletion, email
+      <a href="mailto:support@mcpwarp.io">support@mcpwarp.io</a>. The monitoring service is not
+      tied to your account, so deleting your account does not delete its data automatically; on
+      a deletion request, our administrators delete by hand all monitoring data held for your
+      account, including flag notification emails in their mailbox. Our rules and retention periods may change; we will update this page when they do.
     </p>
 
     <h2>2. Information We Do Not Collect</h2>
     <ul>
       <li>
         The tunnel relays MCP request and response bodies between your MCP client and your local
-        machine in real time. Our systems analyze this traffic automatically to compute abuse
-        measurements, but we do <strong>not store its content or let a person view it</strong>,
-        unless your account is flagged for abuse review. Bodies pass through an internal queue
-        for at most about 6 hours — see "Traffic Monitoring" above.
+        machine in real time. Our monitoring service inspects this traffic automatically, but we
+        do <strong>not store its content or let a person view it</strong>, unless your account
+        is flagged for review. Bodies pass through an internal queue for at most about 6 hours.
+        See "Traffic Monitoring" above.
       </li>
       <li>Card and payment details never touch our servers — see "Subscription Data" above.</li>
       <li>No third-party analytics trackers run on mcpwarp.io or the dashboard.</li>
@@ -251,7 +251,13 @@ import { paymentProvider } from '../data/paymentProvider';
     <p>
       PostgreSQL, NATS, Keycloak, OpenTelemetry and the traffic monitoring service run on
       infrastructure controlled by MCP Warp. Database backups, including account and traffic
-      monitoring data, are stored in Cloudflare R2 and kept for about 7 days.
+      monitoring data, are stored in Cloudflare R2 and kept for about 7 days. Brevo, based in the
+      EU, sends our transactional email from support@mcpwarp.io. It sends notices to our
+      administrators, such as abuse flags, and emails to you when your plan changes: when you
+      move to Plus or Pro or an administrator extends your plan, and when a paid plan ends or is
+      downgraded. For these emails Brevo receives your email address, username, plan name, and
+      the plan's end date. Billing renewals do not send an email, and a flag never emails the
+      flagged user.
     </p>
 
     <h2>4. Your Rights</h2>
@@ -272,10 +278,7 @@ import { paymentProvider } from '../data/paymentProvider';
       <li><strong>Monthly usage counters and tier history</strong> are retained as billing records for the lifetime of your account, except records we are legally required to retain for longer (for example for tax or accounting purposes).</li>
       <li><strong>Personal access token hashes</strong> are retained until you revoke the token or delete your account.</li>
       <li><strong>Dashboard sessions</strong> are retained for up to <strong>30 days</strong>.</li>
-      <li><strong>Traffic monitoring counters:</strong> per-minute counters are kept for about <strong>14 days</strong>, then rolled up into hourly counters, which are currently kept with no automatic expiry. Records of which client IP addresses were seen are kept for about <strong>45 days</strong>.</li>
-      <li><strong>Tunnel request and response bodies</strong> pass through the monitoring queue, where each is deleted once processed and in any case within about <strong>6 hours</strong>. They are kept longer only if your account is flagged for abuse review: per-message records and stored bodies are then kept until an administrator deletes them, and bodies are also deleted oldest first once the per-account limit (about 2,000 bodies or 200 MiB) is reached.</li>
-      <li><strong>Flag records:</strong> in the monitoring service, flag and audit records have no automatic expiry. The copy in our account database is kept until your account is deleted. Flag notifications on our internal message queue are kept for about <strong>7 days</strong>.</li>
-      <li><strong>Traffic monitoring data and account deletion:</strong> the monitoring service is not tied to your account, so deleting your account does not delete its data automatically. On a deletion request, our administrators delete by hand all monitoring data held for your account: counters, IP records, flag and audit records, per-message records and stored bodies.</li>
+      <li><strong>Traffic monitoring data</strong> (counters, client IP records, message records, stored bodies, and flag records) has its own retention periods, listed under "How long" in <a href="#traffic-monitoring">Traffic Monitoring</a> above. Deleting your account does not delete it automatically; on a deletion request, our administrators delete it by hand.</li>
       <li><strong>Database backups</strong>, including account and traffic monitoring data, are kept in Cloudflare R2 for about <strong>7 days</strong>, so deleted data can remain in backups for up to that long.</li>
     </ul>
 

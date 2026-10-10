@@ -23,6 +23,12 @@ export const providers: Provider[] = [
     privacyUrl: null,
   },
   {
+    name: 'Brevo',
+    purpose: 'Transactional email (EU): administrator notices, including abuse flags, and plan-change emails to users',
+    selfHosted: false,
+    privacyUrl: 'https://www.brevo.com/legal/privacypolicy/',
+  },
+  {
     name: 'Keycloak',
     purpose: 'Authentication for the dashboard, CLI, and MCP-client OAuth',
     selfHosted: true,
