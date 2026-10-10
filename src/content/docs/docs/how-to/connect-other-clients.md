@@ -1,6 +1,6 @@
 ---
-title: Connect other clients
-description: Connect an MCP Warp URL to VS Code or any Streamable HTTP MCP client.
+title: Connect VS Code and other Streamable HTTP clients
+description: Point VS Code or any other Streamable HTTP MCP client at the public URL mcpwarp gives your local MCP server.
 ---
 
 **Any client that speaks Streamable HTTP MCP can use an MCP Warp URL directly — point it at the URL and let it run the OAuth flow.**
