@@ -15,6 +15,14 @@ export default defineConfig({
         alt: 'MCP Warp',
       },
       favicon: '/favicon.svg',
+      head: [
+        { tag: 'link', attrs: { rel: 'icon', href: '/favicon.ico', sizes: '32x32' } },
+        { tag: 'link', attrs: { rel: 'icon', href: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' } },
+        { tag: 'link', attrs: { rel: 'icon', href: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' } },
+        { tag: 'link', attrs: { rel: 'icon', href: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' } },
+        { tag: 'link', attrs: { rel: 'icon', href: '/favicon-192x192.png', type: 'image/png', sizes: '192x192' } },
+        { tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180' } },
+      ],
       description:
         'Give your local MCP servers a public, OAuth-protected URL. Like ngrok, but built for MCP.',
       customCss: ['./src/styles/global.css'],
