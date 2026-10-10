@@ -43,7 +43,7 @@ Quota is enforced as a hard block: once you're over, requests get `429` with a J
 The CLI surfaces this as:
 
 ```
-QUOTA_EXCEEDED ... Upgrade your plan at web.mcpwarp.io/settings
+QUOTA_EXCEEDED ... upgrade your plan at https://web.mcpwarp.io/settings to add more servers
 ```
 
 Upgrade from Settings > Billing in the dashboard. See [Manage your subscription](/docs/how-to/billing/).

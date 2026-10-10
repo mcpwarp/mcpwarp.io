@@ -58,11 +58,28 @@ Quit with `q` or Ctrl-C; shutdown is graceful, bounded at 5 seconds, and a secon
 | `j`/`k` or arrows | Select a server |
 | `l` | Toggle the log pane |
 | `pgup`/`pgdn` or `ctrl+u`/`ctrl+d` | Scroll logs |
+| `c` | Copy the selected server's full public URL |
 | `r` | Restart the selected server (stdio only) |
 | `d` | Disable the selected server (stops the child, unregisters it) |
 | `e` | Enable the selected server |
 
-Columns: NAME, KIND, STATE, RESTARTS, URL. STATE is one of `active`, `restarting`, `failed`, `disabled`, `stopped`. A locally disabled server shows as absent — not paused — in the dashboard.
+The footer shows `q quit  ? help  ↑↓/jk select  l logs  c copy URL  r restart  d disable  e enable`.
+
+`c` confirms with a short line such as `copied https://notes-anatoly.tunnel.mcpwarp.io/mcp to clipboard`; on a row with no URL it says `nothing to copy:` instead. It uses the native clipboard tool (`pbcopy` on macOS, `clip.exe` on Windows, `wl-copy` on Wayland, `xclip` or `xsel` on X11) and also sends OSC 52, which is what works over SSH. Inside tmux, OSC 52 needs `set -g set-clipboard on` in your tmux config.
+
+Columns: NAME, KIND, STATE, RESTARTS, URL. A URL too wide for the terminal moves to its own line under the row instead of being cut off. A locally disabled server shows as absent — not paused — in the dashboard.
+
+#### STATE
+
+| State | Meaning |
+| --- | --- |
+| `pending` | Sent to the tunnel, waiting for it to confirm the registration. |
+| `active` | Registered and has a public URL. |
+| `rejected` | The tunnel refused the registration (`QUOTA_EXCEEDED`, `CONFLICT`, `INVALID_NAME`, `USERNAME_REQUIRED`, ...). Shown in red, with no URL; the `last error` line above the table shows the reason and a hint (unless a later error has replaced it). |
+| `disabled` | Disabled locally with `d`, or in the dashboard. |
+| `restarting`, `failed`, `stopped` | stdio only: the local process's state. |
+
+http servers have no local process, so they only ever show the first four. A stdio server shows its process state while that's unhealthy; once the process is healthy it shows its registration state instead. Fixing the cause of a `rejected` row alone (e.g. raising the quota) doesn't re-register it: press `e` on the row, restart `mcpwarp up`, or wait for a reconnect. If the first register reply rejects every server, `mcpwarp up` exits with code 1 instead of showing rejected rows (unless every rejection is `SERVER_DISABLED`).
 
 <!-- SCREENSHOT: tui-up-restart — TUI with a stdio server in restarting state after pressing r -->
 

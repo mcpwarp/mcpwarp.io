@@ -32,7 +32,8 @@ can look different in each place — for example, a server disabled in the dashb
 | `unknown service` (404) | The tunnel edge doesn't recognize the Host header. | Misconfiguration on the tunnel side — check the URL is correct. |
 | `service disabled` (503) | The tunnel has disabled this server (dashboard toggle-off, or a backend policy decision). Your MCP client will see `404` at the public URL. | Check your account and re-enable if needed; it resumes without a restart. |
 | `bad request` (400/431) | The request head was malformed. | Run with `--verbose` for details. |
-| `QUOTA_EXCEEDED ... Upgrade your plan at web.mcpwarp.io/settings` | Your plan's server limit is reached (this is a `register` rejection, not the per-request quota above). | Upgrade to Pro, or remove a server. See [Limits and quotas](/docs/reference/limits-and-quotas/) and [Manage your subscription](/docs/how-to/billing/). |
+| `rejected` in the TUI's STATE column | The tunnel refused to register this server, so it has no public URL. The `last error` line above the table shows the reason (`QUOTA_EXCEEDED`, `CONFLICT`, `INVALID_NAME`, or `USERNAME_REQUIRED`, see below) and a hint, unless a later error has replaced it. | Fixing the cause alone (e.g. raising the quota) doesn't re-register it: press `e` on the row, restart `mcpwarp up`, or wait for a reconnect. |
+| `QUOTA_EXCEEDED ... upgrade your plan at https://web.mcpwarp.io/settings to add more servers` | Your plan's server limit is reached (this is a `register` rejection, not the per-request quota above). | Upgrade to Pro, or remove a server. See [Limits and quotas](/docs/reference/limits-and-quotas/) and [Manage your subscription](/docs/how-to/billing/). |
 | `CONFLICT` | A server with the same name is already registered under a different kind. | Rename the server, or fix the `kind` in your config. |
 | `SERVER_DISABLED` | The server is disabled in the dashboard. | The CLI waits for you to re-enable it in the dashboard. |
 | `INVALID_NAME` | The server's `name` doesn't match the naming rules. | Fix the slug — see [Config reference](/docs/reference/config/). |
@@ -43,6 +44,7 @@ can look different in each place — for example, a server disabled in the dashb
 | Config validation error (exit code 2) | Your config file has a problem. | Fix the listed paths, then run `mcpwarp status --config <path>` to re-check. |
 | `new public URL assigned to <name>` | Informational — first registration, or the server was renamed. | Nothing to fix. |
 | Warning about a name reusing a different id | The same `name` was previously used for a different server identity. | Investigate before assuming it's the server you expect. |
+| `copied <url> via OSC 52 (terminal clipboard)` after pressing `c`, but the clipboard is empty | No native clipboard tool was found (the usual case over SSH), so the URL went only through OSC 52, which your terminal or tmux ignored. `sent <url> via OSC 52 only (...)` means a clipboard tool was found but failed; the error is in the parentheses. | Use a terminal that supports OSC 52 (inside tmux, add `set -g set-clipboard on` to your tmux config), or fix/remove the clipboard tool named in a `sent ... via OSC 52 only` message. |
 
 ## Exit codes
 

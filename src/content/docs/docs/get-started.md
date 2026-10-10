@@ -136,6 +136,6 @@ Mint a token from the dashboard at [web.mcpwarp.io](https://web.mcpwarp.io) — 
 
 ## Paste the URL into a client
 
-Copy the URL from the table and add it to your MCP client as a remote MCP server (custom connector / remote server / `mcp.json`, depending on the client). The client will run through an OAuth sign-in the first time it connects.
+Copy the URL from the table (in the TUI, `c` copies the selected row's URL) and add it to your MCP client as a remote MCP server (custom connector / remote server / `mcp.json`, depending on the client). The client will run through an OAuth sign-in the first time it connects.
 
 See [Connect Claude](/docs/how-to/connect-claude/), [Connect ChatGPT](/docs/how-to/connect-chatgpt/), or [Connect other clients](/docs/how-to/connect-other-clients/) for client-specific steps.
