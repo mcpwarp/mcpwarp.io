@@ -58,4 +58,10 @@ export const providers: Provider[] = [
     selfHosted: true,
     privacyUrl: null,
   },
+  {
+    name: 'Umami',
+    purpose: 'Cookieless page-view analytics on mcpwarp.io',
+    selfHosted: true,
+    privacyUrl: null,
+  },
 ];
