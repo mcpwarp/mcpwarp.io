@@ -2,8 +2,10 @@
 import { Image } from 'astro:assets';
 import Marketing from '../layouts/Marketing.astro';
 import hero from '../assets/hero.png';
+import tuiUp from '../assets/screenshots/tui-up.png';
+import dashboardServers from '../assets/screenshots/dashboard-servers.png';
 
-const steps = [
+const steps: { n: string; label: string; file?: string; code: string }[] = [
   {
     n: '1',
     label: 'Install',
@@ -18,12 +20,25 @@ brew install --cask mcpwarp`,
   },
   {
     n: '3',
+    label: 'Add a server',
+    file: '~/.mcpwarp/config.json',
+    code: `{
+  "servers": [
+    {
+      "name": "notes",
+      "kind": "http",
+      "url": "http://127.0.0.1:8765/mcp"
+    }
+  ]
+}`,
+  },
+  {
+    n: '4',
     label: 'Go',
     code: `mcpwarp up
 
-NAME     KIND   STATE   URL
-blender  stdio  active  https://blender-anatoly.tunnel.mcpwarp.io/mcp
-notes    http   active  https://notes-anatoly.tunnel.mcpwarp.io/mcp`,
+NAME     KIND   URL
+notes    http   https://notes-anatoly.tunnel.mcpwarp.io/mcp`,
   },
 ];
 
@@ -57,6 +72,7 @@ const features = [
 
 <Marketing
   title="MCP Warp"
+  documentTitle="MCP Warp: public OAuth-protected URLs for local MCP servers"
   description="Give your local MCP servers a public, OAuth-protected URL."
 >
   <section class="hero">
@@ -64,8 +80,8 @@ const features = [
       <div class="hero-copy">
         <h1>Give your local MCP servers a public, OAuth-protected URL</h1>
         <p class="subtitle">
-          Like ngrok, but built for MCP. One command, and Claude, ChatGPT and any Streamable HTTP
-          MCP client can securely reach the MCP servers on your machine.
+          Like ngrok, but built for MCP. A short setup, then one command, and Claude, ChatGPT and
+          any Streamable HTTP MCP client can securely reach the MCP servers on your machine.
         </p>
         <div class="cta-row">
           <a class="cta cta-primary" href="/docs/get-started/">Get started</a>
@@ -79,20 +95,31 @@ const features = [
   </section>
 
   <section class="section">
-    <h2>Three commands to a public URL</h2>
+    <h2>Four steps to a public URL</h2>
     <div class="steps">
       {
         steps.map((step) => (
           <div class="step">
             <div class="step-number">{step.n}</div>
             <p class="step-label">{step.label}</p>
+            {step.file && <p class="step-file"><code>{step.file}</code></p>}
             <pre><code>{step.code}</code></pre>
           </div>
         ))
       }
     </div>
+    <p class="steps-note">
+      First time? Sign in once at <a href="https://web.mcpwarp.io">web.mcpwarp.io</a> to pick your
+      username before running <code>mcpwarp up</code>.
+    </p>
     <p class="steps-note">Windows and Linux packages: see <a href="/docs/get-started/#install">the install guide</a>.</p>
-    <!-- SCREENSHOT: tui-up — mcpwarp up TUI with two servers, one stdio one http, both active, log pane open -->
+    <div class="shot">
+      <Image
+        src={tuiUp}
+        alt="The mcpwarp up TUI showing a stdio server and an http server, both active, each with its own public tunnel URL."
+        width={1152}
+      />
+    </div>
   </section>
 
   <section class="section">
@@ -107,7 +134,13 @@ const features = [
         ))
       }
     </div>
-    <!-- SCREENSHOT: dashboard-servers — web.mcpwarp.io server list showing the public URLs and online status -->
+    <div class="shot">
+      <Image
+        src={dashboardServers}
+        alt="The web.mcpwarp.io dashboard listing two servers with their public URLs, Online status and enable toggles."
+        width={1152}
+      />
+    </div>
   </section>
 
   <section class="section how-it-works">
@@ -207,12 +240,18 @@ const features = [
     display: grid;
     gap: 1.5rem;
   }
+  @media (min-width: 48rem) {
+    .steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
   @media (min-width: 64rem) {
     .steps {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
     }
   }
   .step {
+    min-width: 0;
     border: 1px solid var(--sl-color-gray-5);
     border-radius: 0.75rem;
     padding: 1.5rem;
@@ -240,10 +279,25 @@ const features = [
     font-size: 0.85rem;
     overflow-x: auto;
   }
+  .step-file {
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    color: var(--sl-color-gray-3);
+  }
   .steps-note {
     margin: 1rem 0 0;
     font-size: 1.05rem;
     color: var(--sl-color-gray-2);
+  }
+  .shot {
+    margin-top: 2rem;
+  }
+  .shot :global(img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 60px -20px var(--color-brand-glow);
   }
 
   .features {

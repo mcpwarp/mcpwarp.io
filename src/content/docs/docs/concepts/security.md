@@ -1,11 +1,13 @@
 ---
-title: Security
+title: "Security: OAuth by default, no anonymous access"
 description: No anonymous access, OAuth, owner checks, and what the CLI never sees.
 ---
 
 **Every request to a public MCP Warp URL must carry a valid OAuth bearer token belonging to the server's owner — there is no anonymous access.**
 
 ## No anonymous access
+
+This matters because exposed, unauthenticated MCP servers are common: in July 2025, Trend Micro [found 492 MCP servers on the public internet](https://www.trendaisecurity.com/en-us/resources-insights/research/mcp-security-network-exposed-servers-are-backdoors-to-your-private-data) with no client authentication or traffic encryption.
 
 An unauthenticated request gets a 401 with a `WWW-Authenticate` header pointing at the server's Protected Resource Metadata (RFC 9728). MCP clients use this to discover the auth server automatically and run the standard OAuth flow — you don't configure anything for this to work.
 

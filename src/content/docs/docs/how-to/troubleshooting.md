@@ -46,6 +46,26 @@ can look different in each place — for example, a server disabled in the dashb
 | Warning about a name reusing a different id | The same `name` was previously used for a different server identity. | Investigate before assuming it's the server you expect. |
 | `copied <url> via OSC 52 (terminal clipboard)` after pressing `c`, but the clipboard is empty | No native clipboard tool was found (the usual case over SSH), so the URL went only through OSC 52, which your terminal or tmux ignored. `sent <url> via OSC 52 only (...)` means a clipboard tool was found but failed; the error is in the parentheses. | Use a terminal that supports OSC 52 (inside tmux, add `set -g set-clipboard on` to your tmux config), or fix/remove the clipboard tool named in a `sent ... via OSC 52 only` message. |
 
+## Errors your MCP client shows
+
+Some errors come from the client itself, before or after it talks to mcpwarp.
+
+### "Couldn't reach the MCP server" (claude.ai)
+
+Claude couldn't get a response from the URL you added. Check that you pasted the public `https://...tunnel.mcpwarp.io/mcp` URL, not a localhost one, and that `mcpwarp up` is running and shows the server as `active`. If the URL itself returns `404`, `502` or `503`, see the [public URL table](#at-the-public-url-your-mcp-client-sees-this) above.
+
+### "Failed to add connector" with a localhost URL (Claude Desktop)
+
+The dialog only says "Failed to add connector". Claude Desktop's log files have the reason: "Localhost URLs cannot be used because our servers cannot reach your local machine." Custom connectors are called from Anthropic's servers, which can't reach your machine. Run `mcpwarp up` and use the public URL it prints instead. See [Connect Claude](/docs/how-to/connect-claude/).
+
+### "Unsafe URL" (ChatGPT)
+
+ChatGPT rejects `http://localhost` and other local URLs for the same reason. Use the public URL from `mcpwarp up`. See [Connect ChatGPT](/docs/how-to/connect-chatgpt/).
+
+### "Authorization with the MCP server failed" (claude.ai)
+
+The OAuth sign-in didn't complete. Remove and re-add the connector, and finish the sign-in with the MCP Warp account that runs `mcpwarp up`.
+
 ## Exit codes
 
 - `0` — clean exit.

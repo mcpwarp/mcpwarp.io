@@ -1,6 +1,6 @@
 ---
 // Extends Starlight's default Header with MCP Warp's top-level marketing
-// navigation (Docs / Pricing / Blog / About / GitHub / Sign in), while
+// navigation (Docs / Pricing / Blog / Community / About / GitHub / Sign in), while
 // reusing Starlight's own Search and SiteTitle internals unmodified, and
 // our own dark-by-default ThemeSelect override (see ThemeSelect.astro).
 import config from 'virtual:starlight/user-config';
@@ -17,8 +17,11 @@ const navLinks = [
 	{ label: 'Documentation', href: '/docs/' },
 	{ label: 'Pricing', href: '/pricing/' },
 	{ label: 'Blog', href: '/blog/' },
+	{ label: 'Community', href: 'https://forum.mcpwarp.io/', external: true },
 	{ label: 'About', href: '/about/' },
 ];
+
+const externalAttrs = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 
 <div class="mcpwarp-header">
@@ -26,8 +29,14 @@ const navLinks = [
 		<SiteTitle />
 	</div>
 
-	<nav class="nav-links sl-hidden md:sl-flex" aria-label="Main">
-		{navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+	<nav class="nav-links" aria-label="Main">
+		{
+			navLinks.map((link) => (
+				<a href={link.href} {...(link.external ? externalAttrs : {})}>
+					{link.label}
+				</a>
+			))
+		}
 	</nav>
 
 	<div class="sl-flex print:hidden">
@@ -47,7 +56,13 @@ const navLinks = [
 			<Icon name="bars" />
 		</summary>
 		<div class="mobile-nav-panel">
-			{navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+			{
+				navLinks.map((link) => (
+					<a href={link.href} {...(link.external ? externalAttrs : {})}>
+						{link.label}
+					</a>
+				))
+			}
 			<a href="https://github.com/mcpwarp">GitHub</a>
 			<a class="sign-in-button" href="https://web.mcpwarp.io">Sign in</a>
 			<div class="mobile-nav-toggles sl-flex">
@@ -87,6 +102,7 @@ const navLinks = [
 		}
 
 		.nav-links {
+			display: none;
 			gap: 1.5rem;
 			align-items: center;
 			font-size: var(--sl-text-sm);
@@ -177,17 +193,23 @@ const navLinks = [
 			border-top: 1px solid var(--sl-color-gray-5);
 		}
 
-		@media (max-width: 49.9975rem) {
+		@media (min-width: 65rem) {
+			.nav-links {
+				display: flex;
+			}
+		}
+
+		@media (max-width: 64.9975rem) {
 			.mobile-nav {
 				display: flex;
 			}
 
-			/* Starlight renders its own fixed-position sidebar MobileMenuToggle
-			   at the header's right edge on pages with a sidebar (docs/blog),
-			   which otherwise would sit on top of our mobile nav toggle. No
-			   extra spacing needed here: Starlight's PageFrame already adds
-			   `padding-inline-end: calc(--sl-nav-gap + --sl-nav-pad-x +
-			   --sl-menu-button-size)` to `.header` at this same breakpoint
+			/* Below 50rem Starlight renders its own fixed-position sidebar
+			   MobileMenuToggle at the header's right edge on pages with a
+			   sidebar (docs/blog), which otherwise would sit on top of our
+			   mobile nav toggle. No extra spacing needed here: Starlight's
+			   PageFrame already adds `padding-inline-end: calc(--sl-nav-gap +
+			   --sl-nav-pad-x + --sl-menu-button-size)` to `.header` below 50rem
 			   (see @astrojs/starlight/components/PageFrame.astro), and our
 			   `.mcpwarp-header` renders inside that padded box with no
 			   fixed/absolute positioning or negative margins that would
@@ -210,16 +232,20 @@ const navLinks = [
 								var(--sl-content-width)
 						) / 2
 				);
-				display: grid;
-				grid-template-columns:
-					minmax(
-						calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))),
-						auto
-					)
+				--__title-column: minmax(
+					calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))),
 					auto
-					1fr
-					auto;
+				);
+				display: grid;
+				grid-template-columns: var(--__title-column) auto 1fr auto;
 				align-content: center;
+			}
+		}
+
+		/* Nav links are hidden here, so drop their column: search, right group, hamburger. */
+		@media (min-width: 50rem) and (max-width: 64.9975rem) {
+			.mcpwarp-header {
+				grid-template-columns: var(--__title-column) 1fr auto auto;
 			}
 		}
 	}

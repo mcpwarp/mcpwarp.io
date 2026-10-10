@@ -1,9 +1,11 @@
 ---
-title: Expose a stdio server
-description: Configure mcpwarp to spawn a local MCP server and expose it over stdio.
+title: Expose a stdio MCP server as a public Streamable HTTP URL
+description: Configure mcpwarp to spawn a local stdio MCP server and give it a public, OAuth-protected Streamable HTTP URL.
 ---
 
 **Use `"kind": "stdio"` when your MCP server is a command mcpwarp should spawn itself and talk to over stdin/stdout.**
+
+Web clients like claude.ai and ChatGPT can't spawn a process on your machine, so a stdio server needs two things before they can use it: a bridge that turns HTTP requests into stdio messages, and a public URL that points at that bridge. Usually that means running supergateway or mcp-proxy plus a separate tunnel. mcpwarp does both in one step: it spawns your command, bridges it to Streamable HTTP locally, and gives it a public URL.
 
 ## Add the server to your config
 
