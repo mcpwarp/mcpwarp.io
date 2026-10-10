@@ -1,0 +1,60 @@
+---
+// Renders the merchant-of-record paragraph for paid plans, sourced from
+// src/data/paymentProvider.ts. Used on /terms/ and /privacy/.
+import { paymentProvider } from '../data/paymentProvider';
+
+interface Props {
+  context?: 'terms' | 'privacy';
+}
+
+const { context = 'terms' } = Astro.props;
+---
+
+{paymentProvider === null ? (
+  context === 'terms' ? (
+    <p>
+      Payments for paid plans are processed by a third-party payment provider that acts as the
+      merchant of record for your purchase. As merchant of record it is the seller of record: it
+      handles billing, collects and remits applicable taxes, and issues refunds. Its buyer terms
+      and privacy policy apply to your purchase in addition to these Terms; the provider's name
+      and terms are shown at checkout. If the provider's buyer terms conflict with these Terms,
+      the provider's terms govern the payment transaction itself (billing, taxes, invoicing, and
+      the mechanics of refunds) and these Terms govern everything else, including any refund
+      promise we make that is more generous than the provider's policy, which we will honor.
+    </p>
+  ) : (
+    <p>
+      Payments for paid plans are processed by a third-party payment provider acting as merchant
+      of record, which is an independent controller of the payment data it collects. Its privacy
+      policy applies to your purchase in addition to our <a href="/terms/">Terms</a> and this
+      policy; the provider's name and policy are shown at checkout.
+    </p>
+  )
+) : (
+  <>
+    <p>
+      Payments for paid plans are processed by <strong>{paymentProvider.name}</strong> (<a
+        href={paymentProvider.url}>{paymentProvider.shortName}</a
+      >), which acts as the merchant of record for your purchase. {context === 'privacy' && (
+        <>{paymentProvider.shortName} is an independent controller of the payment data it collects. </>
+      )}{paymentProvider.shortName}'s <a
+        href={paymentProvider.buyerTermsUrl}>buyer terms</a
+      > and <a href={paymentProvider.privacyUrl}>privacy policy</a> apply to your purchase in addition
+      to {context === 'privacy' ? (
+        <>our <a href="/terms/">Terms</a> and this policy.</>
+      ) : (
+        <>these Terms.</>
+      )}
+    </p>
+    {context === 'terms' && (
+      <p>
+        As merchant of record, {paymentProvider.shortName} is the seller of record for your purchase:
+        it handles billing, collects and remits applicable taxes, and issues refunds. If {paymentProvider.shortName}'s
+        buyer terms conflict with these Terms, {paymentProvider.shortName}'s terms govern the payment
+        transaction itself (billing, taxes, invoicing, and the mechanics of refunds) and these Terms
+        govern everything else, including any refund promise we make that is more generous than {paymentProvider.shortName}'s
+        policy, which we will honor.
+      </p>
+    )}
+  </>
+)}

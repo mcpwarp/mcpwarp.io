@@ -1,0 +1,60 @@
+---
+// Override of Starlight's default ThemeProvider: same behavior, except the
+// site defaults to dark mode instead of following the OS preference when the
+// visitor has no stored choice yet. The theme toggle still works normally.
+import { Icon } from '@astrojs/starlight/components';
+---
+
+{/* This is intentionally inlined to avoid FOUC. */}
+<script is:inline>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' ? localStorage.getItem('starlight-theme') : null;
+		// No stored preference (storedTheme === null) defaults to dark instead of
+		// following the OS preference. An explicit "Auto" choice (stored as '' by
+		// ThemeSelect) still resolves from prefers-color-scheme. Keep this in sync
+		// with src/components/ThemeSelect.astro's loadTheme().
+		const theme =
+			storedTheme === 'light' || storedTheme === 'dark'
+				? storedTheme
+				: storedTheme === null
+					? 'dark'
+					: matchMedia('(prefers-color-scheme: light)').matches
+						? 'light'
+						: 'dark';
+		document.documentElement.dataset.theme = theme;
+		return {
+			// Default mirrors the resolution above (and ThemeSelect.astro's
+			// loadTheme()): no stored preference selects 'dark', not 'auto', so
+			// the picker agrees with the page's dark-by-default choice on first
+			// paint instead of flashing "Auto" before being corrected.
+			updatePickers(
+				theme = storedTheme === 'light' || storedTheme === 'dark'
+					? storedTheme
+					: storedTheme === null
+						? 'dark'
+						: 'auto',
+			) {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script>
+
+<template id="theme-icons">
+	<Icon name="sun" class="light" />
+	<Icon name="moon" class="dark" />
+	<Icon name="laptop" class="auto" />
+</template>

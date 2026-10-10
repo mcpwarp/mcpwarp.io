@@ -1,0 +1,106 @@
+---
+// Override of Starlight's default ThemeSelect. We set the starlight-blog
+// `navigation` option to 'none' (see astro.config.mjs) and hand-write the
+// Blog nav link in Header.astro instead, so starlight-blog's own header
+// links (`starlight-blog/components/ThemeSelect.astro`) render nothing here
+// and don't need to be included.
+//
+// This is a copy of Starlight's own theme-picker markup and client script,
+// modified so a visitor with no stored preference defaults to dark instead
+// of following the OS preference — matching ThemeProvider.astro's
+// dark-by-default behavior. An explicit "Auto" choice still follows the OS.
+import Select from '@astrojs/starlight/components/Select.astro';
+
+interface Props {
+	labelSuffix?: string;
+}
+
+const { labelSuffix = '' } = Astro.props;
+---
+
+<starlight-theme-select>
+	<Select
+		icon="laptop"
+		label={Astro.locals.t('themeSelect.accessibleLabel') + labelSuffix}
+		options={[
+			{ label: Astro.locals.t('themeSelect.dark'), selected: false, value: 'dark' },
+			{ label: Astro.locals.t('themeSelect.light'), selected: false, value: 'light' },
+			{ label: Astro.locals.t('themeSelect.auto'), selected: true, value: 'auto' },
+		]}
+		width="6.25em"
+	/>
+</starlight-theme-select>
+
+{/* Inlined to avoid FOUC. Uses global scope from `ThemeProvider.astro` */}
+<script is:inline>
+	StarlightThemeProvider.updatePickers();
+</script>
+
+<script>
+	type Theme = 'auto' | 'dark' | 'light';
+
+	/** Key in `localStorage` to store color theme preference at. */
+	const storageKey = 'starlight-theme';
+
+	/**
+	 * Load the visitor's preference from `localStorage`.
+	 *
+	 * Unlike Starlight's default, an unset preference (`getItem` returns
+	 * `null`) resolves to `'dark'`, not `'auto'` — otherwise the site's
+	 * dark-by-default choice gets undone by the OS preference on every page
+	 * load. An explicit "Auto" choice is stored as `''` (see `storeTheme`)
+	 * and still resolves via `prefers-color-scheme`. Keep this in sync with
+	 * `ThemeProvider.astro`'s inline script.
+	 */
+	const loadTheme = (): Theme => {
+		const stored = typeof localStorage !== 'undefined' ? localStorage.getItem(storageKey) : null;
+		if (stored === 'light' || stored === 'dark') return stored;
+		if (stored === null) return 'dark';
+		return 'auto';
+	};
+
+	/** Store the user's preference in `localStorage`. */
+	function storeTheme(theme: Theme): void {
+		if (typeof localStorage !== 'undefined') {
+			localStorage.setItem(storageKey, theme === 'light' || theme === 'dark' ? theme : '');
+		}
+	}
+
+	/** Get the preferred system color scheme. */
+	const getPreferredColorScheme = (): Theme =>
+		matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+
+	/** Update select menu UI, document theme, and local storage state. */
+	function onThemeChange(theme: Theme): void {
+		StarlightThemeProvider.updatePickers(theme);
+		document.documentElement.dataset.theme = theme === 'auto' ? getPreferredColorScheme() : theme;
+		storeTheme(theme);
+	}
+
+	// React to changes in system color scheme.
+	matchMedia(`(prefers-color-scheme: light)`).addEventListener('change', () => {
+		if (loadTheme() === 'auto') onThemeChange('auto');
+	});
+
+	class StarlightThemeSelect extends HTMLElement {
+		constructor() {
+			super();
+			// On first visit (nothing stored), loadTheme() resolves to 'dark' and
+			// this call persists 'dark' to localStorage by design.
+			onThemeChange(loadTheme());
+			this.querySelector('select')?.addEventListener('change', (e) => {
+				if (e.currentTarget instanceof HTMLSelectElement) {
+					onThemeChange(parseTheme(e.currentTarget.value));
+				}
+			});
+		}
+	}
+
+	/** Get a typesafe theme string from any JS value (unknown values are coerced to `'auto'`). */
+	const parseTheme = (theme: unknown): Theme =>
+		theme === 'auto' || theme === 'dark' || theme === 'light' ? theme : 'auto';
+
+	if (!customElements.get('starlight-theme-select')) {
+		customElements.define('starlight-theme-select', StarlightThemeSelect);
+	}
+</script>

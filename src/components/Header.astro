@@ -1,0 +1,226 @@
+---
+// Extends Starlight's default Header with MCP Warp's top-level marketing
+// navigation (Docs / Pricing / Blog / About / GitHub / Sign in), while
+// reusing Starlight's own Search and SiteTitle internals unmodified, and
+// our own dark-by-default ThemeSelect override (see ThemeSelect.astro).
+import config from 'virtual:starlight/user-config';
+
+import Search from 'virtual:starlight/components/Search';
+import SiteTitle from 'virtual:starlight/components/SiteTitle';
+import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+import { Icon } from '@astrojs/starlight/components';
+
+const shouldRenderSearch =
+	config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
+
+const navLinks = [
+	{ label: 'Documentation', href: '/docs/' },
+	{ label: 'Pricing', href: '/pricing/' },
+	{ label: 'Blog', href: '/blog/' },
+	{ label: 'About', href: '/about/' },
+];
+---
+
+<div class="mcpwarp-header">
+	<div class="title-wrapper sl-flex">
+		<SiteTitle />
+	</div>
+
+	<nav class="nav-links sl-hidden md:sl-flex" aria-label="Main">
+		{navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+	</nav>
+
+	<div class="sl-flex print:hidden">
+		{shouldRenderSearch && <Search />}
+	</div>
+
+	<div class="sl-hidden md:sl-flex print:hidden right-group">
+		<a class="github-link sl-flex" href="https://github.com/mcpwarp">
+			<Icon name="github" label="GitHub" />
+		</a>
+		<a class="sign-in-button" href="https://web.mcpwarp.io">Sign in</a>
+		<ThemeSelect />
+	</div>
+
+	<details class="mobile-nav print:hidden">
+		<summary aria-label="More links">
+			<Icon name="bars" />
+		</summary>
+		<div class="mobile-nav-panel">
+			{navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+			<a href="https://github.com/mcpwarp">GitHub</a>
+			<a class="sign-in-button" href="https://web.mcpwarp.io">Sign in</a>
+			<div class="mobile-nav-toggles sl-flex">
+				<ThemeSelect labelSuffix=" (mobile menu)" />
+			</div>
+		</div>
+	</details>
+</div>
+
+<script>
+	// Close the mobile nav panel on Escape.
+	document.querySelectorAll<HTMLDetailsElement>('.mobile-nav').forEach((details) => {
+		details.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && details.open) {
+				details.open = false;
+				details.querySelector('summary')?.focus();
+			}
+		});
+	});
+</script>
+
+<style>
+	@layer starlight.core {
+		.mcpwarp-header {
+			display: flex;
+			gap: var(--sl-nav-gap);
+			justify-content: space-between;
+			align-items: center;
+			height: 100%;
+		}
+
+		.title-wrapper {
+			overflow: clip;
+			padding: 0.25rem;
+			margin: -0.25rem;
+			min-width: 0;
+		}
+
+		.nav-links {
+			gap: 1.5rem;
+			align-items: center;
+			font-size: var(--sl-text-sm);
+			white-space: nowrap;
+		}
+		.nav-links a {
+			color: var(--sl-color-gray-2);
+			text-decoration: none;
+		}
+		.nav-links a:hover {
+			color: var(--sl-color-white);
+		}
+
+		.right-group {
+			gap: 1rem;
+			align-items: center;
+		}
+
+		.github-link {
+			align-items: center;
+			color: var(--sl-color-gray-2);
+		}
+		.github-link:hover {
+			color: var(--sl-color-white);
+		}
+
+		.sign-in-button {
+			display: inline-flex;
+			align-items: center;
+			white-space: nowrap;
+			border-radius: 0.375rem;
+			padding: 0.4rem 0.9rem;
+			font-size: var(--sl-text-sm);
+			font-weight: 600;
+			text-decoration: none;
+			color: var(--color-gray-950);
+			background-color: var(--color-brand);
+		}
+		.sign-in-button:hover {
+			background-color: var(--color-accent-300);
+		}
+
+		.mobile-nav {
+			display: none;
+			position: relative;
+		}
+		.mobile-nav summary {
+			list-style: none;
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			color: var(--sl-color-gray-2);
+		}
+		.mobile-nav summary::-webkit-details-marker {
+			display: none;
+		}
+		.mobile-nav-panel {
+			display: flex;
+			position: absolute;
+			top: calc(100% + 0.5rem);
+			right: 0;
+			z-index: 20;
+			flex-direction: column;
+			gap: 0.75rem;
+			min-width: 12rem;
+			padding: 1rem;
+			border-radius: 0.5rem;
+			border: 1px solid var(--sl-color-gray-5);
+			background-color: var(--sl-color-bg-nav);
+			box-shadow: var(--sl-shadow-lg);
+		}
+		.mobile-nav-panel a {
+			color: var(--sl-color-gray-2);
+			text-decoration: none;
+			font-size: var(--sl-text-sm);
+		}
+		.mobile-nav-panel a:hover {
+			color: var(--sl-color-white);
+		}
+		.mobile-nav-panel .sign-in-button {
+			justify-content: center;
+			margin-top: 0.25rem;
+		}
+		.mobile-nav-toggles {
+			gap: 1rem;
+			margin-top: 0.5rem;
+			padding-top: 0.75rem;
+			border-top: 1px solid var(--sl-color-gray-5);
+		}
+
+		@media (max-width: 49.9975rem) {
+			.mobile-nav {
+				display: flex;
+			}
+
+			/* Starlight renders its own fixed-position sidebar MobileMenuToggle
+			   at the header's right edge on pages with a sidebar (docs/blog),
+			   which otherwise would sit on top of our mobile nav toggle. No
+			   extra spacing needed here: Starlight's PageFrame already adds
+			   `padding-inline-end: calc(--sl-nav-gap + --sl-nav-pad-x +
+			   --sl-menu-button-size)` to `.header` at this same breakpoint
+			   (see @astrojs/starlight/components/PageFrame.astro), and our
+			   `.mcpwarp-header` renders inside that padded box with no
+			   fixed/absolute positioning or negative margins that would
+			   escape it, so it's already clear of the toggle. */
+		}
+
+		@media (min-width: 50rem) {
+			:global(:root[data-has-sidebar]) {
+				--__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
+			}
+			:global(:root:not([data-has-toc])) {
+				--__toc-width: 0rem;
+			}
+			.mcpwarp-header {
+				--__sidebar-width: max(0rem, var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x));
+				--__main-column-fr: calc(
+					(
+							100% + var(--__sidebar-pad, 0rem) - var(--__toc-width, var(--sl-sidebar-width)) -
+								(2 * var(--__toc-width, var(--sl-nav-pad-x))) - var(--sl-content-inline-start, 0rem) -
+								var(--sl-content-width)
+						) / 2
+				);
+				display: grid;
+				grid-template-columns:
+					minmax(
+						calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))),
+						auto
+					)
+					auto
+					1fr
+					auto;
+				align-content: center;
+			}
+		}
+	}
+</style>

@@ -1,0 +1,46 @@
+/*
+ * MCP Warp brand palette.
+ *
+ * Change the palette here and nowhere else. Every component and page
+ * references only these tokens (or Tailwind utilities derived from them,
+ * e.g. `bg-accent-600`, `text-gray-700`) — never a hard-coded hex value.
+ * The single exception is `public/favicon.svg`, which is a static asset.
+ *
+ * `--color-accent-*` and `--color-gray-*` follow the 50..950 shape Starlight's
+ * Tailwind integration expects. `--color-brand` and `--color-brand-glow`
+ * are extra semantic tokens used by the custom marketing pages (buttons,
+ * glows).
+ *
+ * Starting palette, derived from the logo (navy #070B1F background, cyan
+ * #22D3EE ring, violet #8B5CF6 ring): accent = Tailwind cyan, gray = Tailwind
+ * slate, brand-glow = Tailwind violet-500.
+ */
+@theme {
+  --color-accent-50: var(--color-cyan-50);
+  --color-accent-100: var(--color-cyan-100);
+  --color-accent-200: var(--color-cyan-200);
+  --color-accent-300: var(--color-cyan-300);
+  --color-accent-400: var(--color-cyan-400);
+  --color-accent-500: var(--color-cyan-500);
+  --color-accent-600: var(--color-cyan-600);
+  --color-accent-700: var(--color-cyan-700);
+  --color-accent-800: var(--color-cyan-800);
+  --color-accent-900: var(--color-cyan-900);
+  --color-accent-950: var(--color-cyan-950);
+
+  --color-gray-50: var(--color-slate-50);
+  --color-gray-100: var(--color-slate-100);
+  --color-gray-200: var(--color-slate-200);
+  --color-gray-300: var(--color-slate-300);
+  --color-gray-400: var(--color-slate-400);
+  --color-gray-500: var(--color-slate-500);
+  --color-gray-600: var(--color-slate-600);
+  --color-gray-700: var(--color-slate-700);
+  --color-gray-800: var(--color-slate-800);
+  --color-gray-900: var(--color-slate-900);
+  --color-gray-950: var(--color-slate-950);
+
+  /* Semantic brand tokens for the custom marketing pages. */
+  --color-brand: var(--color-cyan-500);
+  --color-brand-glow: var(--color-violet-500);
+}
