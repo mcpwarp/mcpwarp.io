@@ -5,6 +5,10 @@ description: The request path from an LLM client to your local MCP server, end t
 
 **A request from an LLM client to your public MCP Warp URL passes through the tunnel edge, over a persistent connection, to `mcpwarp up` on your machine, and into your local server — streaming the whole way.**
 
+## Local, remote, or tunneled
+
+A local MCP server runs on your machine, either over stdio or as HTTP on localhost, so only clients running on the same machine, like Claude Desktop or Claude Code, can use it. A remote MCP server runs somewhere public with its own URL and auth: one you deploy and host yourself, or one a vendor hosts for you. A tunneled server, which is what MCP Warp gives you, keeps running on your machine but gets a public URL, so web clients like claude.ai and ChatGPT can reach it too.
+
 ## Request path
 
 1. Your MCP client sends an HTTPS request to `https://<name>-<username>.tunnel.mcpwarp.io/mcp`.
@@ -37,6 +41,4 @@ Your MCP server
 
 The web dashboard at [web.mcpwarp.io](https://web.mcpwarp.io) lists every server you've registered, its public URL, and whether it's online.
 
-<!-- SCREENSHOT: dashboard-servers — web.mcpwarp.io server list showing the public URLs and online status -->
-
-*Screenshot coming: the dashboard's server list with public URLs and online status.*
+![The web.mcpwarp.io My servers list with an http and a stdio server, each showing its public URL, Online status, a Copy button and an enable toggle.](../../../../assets/screenshots/dashboard-servers.png)

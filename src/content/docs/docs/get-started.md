@@ -74,9 +74,15 @@ This opens your browser for a device-flow login. If a browser can't be opened (f
 mcpwarp login --no-browser
 ```
 
-<!-- SCREENSHOT: login-device-code — terminal showing "To log in, open: ..." and the code -->
+The terminal prints the login URL with your code, then the browser walks you through sign-in, granting the CLI access, and a confirmation page:
 
-*Screenshot coming: terminal showing the device-flow login URL and code.*
+![Terminal running mcpwarp login, printing an auth.mcpwarp.io device URL with a user code and waiting for the browser.](../../../assets/screenshots/login-device-code.png)
+
+![MCP Warp sign-in page with username or email, password, and GitHub and Google sign-in options.](../../../assets/screenshots/login-sign-in.png)
+
+![Grant Access to mcpwarp CLI page asking to allow offline access, email address, user profile and user roles.](../../../assets/screenshots/login-grant.png)
+
+![Device Login Successful page telling you to close the browser window and go back to your device.](../../../assets/screenshots/login-success.png)
 
 Credentials are stored per-issuer under `~/.mcpwarp/credentials/`, mode `0600`.
 
@@ -113,9 +119,9 @@ NAME     KIND   URL
 notes    http   https://notes-anatoly.tunnel.mcpwarp.io/mcp
 ```
 
-<!-- SCREENSHOT: tui-up — mcpwarp up TUI with two servers, one stdio one http, both active, log pane open -->
+On a TTY it looks like this:
 
-*Screenshot coming: the `mcpwarp up` TUI with two active servers and the log pane open.*
+![The mcpwarp up TUI showing a stdio server and an http server both active with public URLs, and the log pane open with the stdio server's startup output.](../../../assets/screenshots/tui-up-logs.png)
 
 On first `up`, you may see a `USERNAME_REQUIRED` error — sign in once at [web.mcpwarp.io](https://web.mcpwarp.io) to pick a username, then rerun `mcpwarp up`.
 
@@ -130,9 +136,11 @@ mcpwarp up --no-tui
 
 Mint a token from the dashboard at [web.mcpwarp.io](https://web.mcpwarp.io) — it's shown once.
 
-<!-- SCREENSHOT: pat-create — dashboard personal access token creation dialog with the token shown once -->
+Give the token a name and an expiry:
 
-*Screenshot coming: the dashboard's personal access token creation dialog.*
+![New access token dialog with a name field and a 90-day expiry](../../../assets/screenshots/pat-new.png)
+
+![The dashboard's Token created dialog showing a new mcpwarp_pat_ token with a Copy button and a warning that it won't be shown again.](../../../assets/screenshots/pat-create.png)
 
 ## Paste the URL into a client
 

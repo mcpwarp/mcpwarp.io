@@ -43,9 +43,9 @@ On an interactive terminal (stdin and stdout both a TTY), `up` runs a full-scree
 
 - `--no-tui` — force plain line output even on a TTY.
 
-<!-- SCREENSHOT: tui-up — mcpwarp up TUI with two servers, one stdio one http, both active, log pane open -->
+On a TTY it looks like this:
 
-*Screenshot coming: the `mcpwarp up` TUI with two active servers and the log pane open.*
+![The mcpwarp up TUI showing a stdio server and an http server both active with public URLs, and the log pane open with the stdio server's startup output.](../../../../assets/screenshots/tui-up-logs.png)
 
 Quit with `q` or Ctrl-C; shutdown is graceful, bounded at 5 seconds, and a second Ctrl-C forces it.
 
@@ -81,9 +81,9 @@ Columns: NAME, KIND, STATE, RESTARTS, URL. A URL too wide for the terminal moves
 
 http servers have no local process, so they only ever show the first four. A stdio server shows its process state while that's unhealthy; once the process is healthy it shows its registration state instead. Fixing the cause of a `rejected` row alone (e.g. raising the quota) doesn't re-register it: press `e` on the row, restart `mcpwarp up`, or wait for a reconnect. If the first register reply rejects every server, `mcpwarp up` exits with code 1 instead of showing rejected rows (unless every rejection is `SERVER_DISABLED`).
 
-<!-- SCREENSHOT: tui-up-restart — TUI with a stdio server in restarting state after pressing r -->
+Pressing `r` on a stdio row restarts the child process and increments RESTARTS:
 
-*Screenshot coming: the TUI showing a stdio server in `restarting` state after pressing `r`.*
+![mcpwarp up TUI after restarting the stdio server with r, showing 4 restarts and both servers active](../../../../assets/screenshots/tui-up-restart.png)
 
 ### `mcpwarp dashboard`
 

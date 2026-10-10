@@ -8,15 +8,18 @@ import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 interface Props {
   title: string;
   description?: string;
+  // Full <title> text. Without it Starlight renders "<title> | <site title>".
+  documentTitle?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, documentTitle } = Astro.props;
 ---
 
 <StarlightPage
   frontmatter={{
     title,
     description,
+    head: documentTitle ? [{ tag: 'title', content: documentTitle }] : [],
     template: 'splash',
     tableOfContents: false,
   }}
