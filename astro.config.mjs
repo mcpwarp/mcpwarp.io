@@ -22,6 +22,16 @@ export default defineConfig({
         { tag: 'link', attrs: { rel: 'icon', href: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' } },
         { tag: 'link', attrs: { rel: 'icon', href: '/favicon-192x192.png', type: 'image/png', sizes: '192x192' } },
         { tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180' } },
+        // Umami page-view analytics: self-hosted, cookieless.
+        {
+          tag: 'script',
+          attrs: {
+            defer: true,
+            src: 'https://analytics.anatoly.dev/script.js',
+            'data-website-id': 'ae5f045f-1a4d-4023-93da-4b4a28f31e31',
+            'data-do-not-track': 'true',
+          },
+        },
       ],
       description:
         'Give your local MCP servers a public, OAuth-protected URL. Like ngrok, but built for MCP.',

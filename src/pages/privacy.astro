@@ -13,7 +13,7 @@ import { paymentProvider } from '../data/paymentProvider';
     <div class="callout">
       <p><strong>The short version.</strong> This summary is for convenience only — the full policy below is what applies.</p>
       <ul>
-        <li>mcpwarp.io sets no cookies and uses no third-party analytics.</li>
+        <li>mcpwarp.io sets no cookies. It counts page views with a self-hosted, cookieless analytics service (Umami) on our own infrastructure; no third-party analytics or tracking scripts run.</li>
         <li>The tunnel <strong>relays</strong> your MCP request and response bodies to your machine. An automated monitoring service inspects this traffic to detect abuse and illegal activity, and keeps the calling client's IP address and request metadata. Beyond a short-lived processing queue, message content is stored, and can be viewed by a person, only if your account is flagged for review. See "Traffic Monitoring" below.</li>
         <li>The dashboard at web.mcpwarp.io sets one httpOnly session cookie to keep you signed in.</li>
         <li>We collect account data (email, username, account identifier), your server's name, kind and status, monthly usage counters, subscription data from our payment provider, and personal access token hashes.</li>
@@ -33,7 +33,13 @@ import { paymentProvider } from '../data/paymentProvider';
 
     <h3>Website</h3>
     <p>
-      mcpwarp.io sets no cookies and uses no third-party analytics. Our hosting provider may
+      mcpwarp.io sets no cookies. It uses a self-hosted, cookieless analytics service (Umami) on
+      our own infrastructure to count page views, and honours your browser's Do Not Track
+      setting. It does no cross-site tracking and does not store IP addresses; it records the
+      page, referrer, browser, operating system, device type and approximate location (country,
+      region, city), linked by an anonymised identifier that resets every month. We process this
+      data on the basis of our legitimate interest in understanding how the Website is used. No
+      third-party analytics or tracking scripts run on mcpwarp.io. Our hosting provider may
       collect technical information such as IP addresses in server logs as part of operating the
       infrastructure.
     </p>
@@ -196,7 +202,7 @@ import { paymentProvider } from '../data/paymentProvider';
         See "Traffic Monitoring" above.
       </li>
       <li>Card and payment details never touch our servers — see "Subscription Data" above.</li>
-      <li>No third-party analytics trackers run on mcpwarp.io or the dashboard.</li>
+      <li>No third-party analytics or tracking scripts run on mcpwarp.io or the dashboard. mcpwarp.io counts page views with self-hosted, cookieless Umami.</li>
     </ul>
 
     <h2>3. Third-Party Services</h2>
@@ -249,7 +255,7 @@ import { paymentProvider } from '../data/paymentProvider';
       </table>
     </div>
     <p>
-      PostgreSQL, NATS, Keycloak, OpenTelemetry and the traffic monitoring service run on
+      PostgreSQL, NATS, Keycloak, OpenTelemetry, Umami and the traffic monitoring service run on
       infrastructure controlled by MCP Warp. Database backups, including account and traffic
       monitoring data, are stored in Cloudflare R2 and kept for about 7 days. Brevo, based in the
       EU, sends our transactional email from support@mcpwarp.io. It sends notices to our
@@ -278,6 +284,7 @@ import { paymentProvider } from '../data/paymentProvider';
       <li><strong>Monthly usage counters and tier history</strong> are retained as billing records for the lifetime of your account, except records we are legally required to retain for longer (for example for tax or accounting purposes).</li>
       <li><strong>Personal access token hashes</strong> are retained until you revoke the token or delete your account.</li>
       <li><strong>Dashboard sessions</strong> are retained for up to <strong>30 days</strong>.</li>
+      <li><strong>Website analytics (Umami)</strong> are kept until deleted.</li>
       <li><strong>Traffic monitoring data</strong> (counters, client IP records, message records, stored bodies, and flag records) has its own retention periods, listed under "How long" in <a href="#traffic-monitoring">Traffic Monitoring</a> above. Deleting your account does not delete it automatically; on a deletion request, our administrators delete it by hand.</li>
       <li><strong>Database backups</strong>, including account and traffic monitoring data, are kept in Cloudflare R2 for about <strong>7 days</strong>, so deleted data can remain in backups for up to that long.</li>
     </ul>
